@@ -1,0 +1,584 @@
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #e0e5eb;
+  --accent-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --text-color: #333;
+  --border-color: #ced4da;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --hover-color: #3a5a8c;
+  --add-button-color: #28a745;
+  --add-button-hover: #218838;
+  --remove-button-color: #dc3545;
+  --remove-button-hover: #c82333;
+}
+html {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: #f5f7fa;
+  padding: 20px;
+  width: 100%;
+  height: 100vh;
+  max-width: 1000px;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  max-width: 100%;
+}
+
+legend {
+  font-size: 18px;
+  padding: 0 10px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.dynamic-container {
+  width: 100%;
+}
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+}
+
+.checkbox-group.bloco-checkbox {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 20px;
+}
+.checkbox-group.bloco-checkbox > label {
+  line-height: normal;
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.checkbox-group.checkbox-line {
+  font-size: 14px;
+}
+.form-group-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group-title label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.form-group-title input,
+.form-group-title select {
+  flex: 1;
+  min-width: 150px;
+}
+
+.form-group-acoes {
+  margin-bottom: 15px;
+}
+
+.form-group-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-group-item label {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.multipla {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-left: 4px solid var(--hover-color);
+  padding-left: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Estilo para o grid de checklist */
+.checklist-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  max-width: 1000px;
+}
+
+.checklist-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+}
+
+.checklist-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.checklist-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+
+.checklist-row:last-child {
+  border-bottom: none;
+}
+
+.checklist-cell {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.checklist-radio {
+  justify-self: center;
+  justify-content: center;
+}
+
+.checklist-cell.header {
+  justify-content: center;
+  text-align: center;
+  padding: 12px 10px;
+}
+
+.checklist-cell.checklist-item {
+  font-weight: 500;
+}
+
+/* Estilo para os radio buttons */
+.checklist-cell input[type="radio"] {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.checklist-cell input[type="radio"] + label {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 20px;
+  margin-bottom: 0;
+  position: relative;
+  top: 0;
+}
+
+/* Estilo para os checkboxes */
+input[type="checkbox"] {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+input[type="checkbox"] + span {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 20px;
+  position: relative;
+  top: 0;
+}
+
+/* Estilo para os detalhes */
+.details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: var(--light-color);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  margin-left: 30px;
+}
+
+.details-container label {
+  margin-bottom: 3px;
+}
+
+.details-container input[type="text"],
+.details-container input[type="date"],
+.details-container textarea {
+  width: 100%;
+}
+
+/* Estilo para os meses (checkbox) */
+.months-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  max-width: 600px;
+}
+
+.months-container label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  white-space: nowrap;
+}
+
+/* Estilo para observações */
+.observacoes-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: var(--light-color);
+  border-radius: 4px;
+  max-width: 1000px;
+}
+
+.observacoes-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.observacoes-container textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  resize: vertical;
+}
+
+/* Estilo para botões */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.add-button {
+  background-color: var(--add-button-color);
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-button span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.add-button:hover {
+  background-color: var(--add-button-hover);
+}
+
+button[class*='remove'] {
+  background-color: var(--remove-button-color);
+  margin: 10px;
+  color: white;
+}
+
+button[class*='remove']:hover {
+  background-color: var(--remove-button-hover);
+}
+
+/* Estilo para o container de ajuste */
+.ajuste-container {
+  margin-bottom: 10px;
+}
+
+/* Estilo para o cabeçalho de cada template clonado */
+.template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  max-width: 900px;
+}
+
+.template-header input {
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Estilo para seções internas */
+section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--light-color);
+  border-radius: 4px;
+  max-width: 900px;
+}
+
+hr {
+  margin: 15px 0;
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  max-width: 900px;
+}
+
+.print-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.print-button:hover {
+  background-color: var(--hover-color);
+}
+
+.save-button,
+.load-button,
+.print-button {
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  text-transform: uppercase;
+}
+
+.save-button {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.save-button:hover {
+  background-color: var(--add-button-hover);
+}
+
+.load-button {
+  background-color: var(--warning-color);
+  color: var(--dark-color);
+}
+
+.load-button:hover {
+  background-color: #e0a800;
+}
+
+/* Ajustes para o checkbox "Não se aplica" */
+label:has(> .nao-se-aplica-checkbox) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.nao-se-aplica-checkbox {
+  margin-right: 8px;
+}
+
+.save-load-print-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: #fFF;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  display: flex;
+  margin-bottom: 20px;
+  margin-right: 8px;
+  flex-direction: column;
+  gap: 16px;
+  width: 180px;
+  padding: 20px;
+  z-index: 1;
+}
+button:disabled {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  cursor: not-allowed;
+}
+button:disabled:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(0);
+}
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+footer p {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+/* Responsividade */
+@media (max-width: 1285px) {
+  .save-load-print-container {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border: none;
+    box-shadow: none;
+  }
+}
+@media (max-width: 768px) {
+  .form-group-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-group-title input,
+  .form-group-title select {
+    width: 100%;
+  }
+
+  .checklist-header,
+  .checklist-row {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .months-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .months-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .save-load-print-container {
+    flex-direction: column;
+  }
+}
+
+/* Estilos para impressão */
+@media print {
+  body {
+    background-color: white;
+    padding: 0;
+    font-size: 12pt;
+  }
+
+  fieldset,
+  .checklist-grid,
+  section {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+
+  .add-button,
+  .remove-button,
+  .print-button,
+  .save-button,
+  .load-button {
+    display: none;
+  }
+
+  .title {
+    font-size: 18pt;
+  }
+
+  .subtitle {
+    font-size: 14pt;
+  }
+}
