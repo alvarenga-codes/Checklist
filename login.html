@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Checklist Uniag</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <button onclick="netlifyIdentity.open()">Entrar com Netlify Identity</button>
+        <p id="message"></p>
+    </div>
+    <script>
+        // Inicialize o Netlify Identity
+        netlifyIdentity.init();
+
+        // Redireciona se já estiver logado
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Manipula eventos de login e logout
+        netlifyIdentity.on('login', user => {
+            localStorage.setItem('isLoggedIn', 'true');
+            document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
+            window.location.href = 'index.html';
+        });
+
+        netlifyIdentity.on('logout', () => {
+            localStorage.removeItem('isLoggedIn');
+            document.getElementById('message').textContent = 'Logout realizado.';
+            window.location.href = 'login.html';
+        });
+
+        netlifyIdentity.on('error', err => {
+            document.getElementById('message').textContent = 'Erro: ' + err.message;
+        });
+    </script>
+</body>
+</html>
