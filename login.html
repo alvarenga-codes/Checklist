@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Checklist Uniag</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Script do Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
@@ -14,30 +15,42 @@
         <p id="message"></p>
     </div>
     <script>
-        // Inicialize o Netlify Identity
-        netlifyIdentity.init();
+        // Inicialize o Netlify Identity com contêiner específico
+        netlifyIdentity.init({
+            container: document.querySelector('body') // Usa o body como contêiner
+        });
 
-        // Redireciona se já estiver logado
+        // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
             window.location.href = 'index.html';
         }
 
-        // Manipula eventos de login e logout
+        // Manipula eventos de login
         netlifyIdentity.on('login', user => {
             localStorage.setItem('isLoggedIn', 'true');
             document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
             window.location.href = 'index.html';
         });
 
+        // Manipula eventos de logout
         netlifyIdentity.on('logout', () => {
             localStorage.removeItem('isLoggedIn');
             document.getElementById('message').textContent = 'Logout realizado.';
             window.location.href = 'login.html';
         });
 
+        // Manipula erros
         netlifyIdentity.on('error', err => {
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
+
+        // Captura o token de convite (se presente)
+        const urlParams = new URLSearchParams(window.location.search);
+        const inviteToken = urlParams.get('invite_token');
+        if (inviteToken) {
+            netlifyIdentity.open('signup'); // Força o modo de inscrição
+            document.getElementById('message').textContent = 'Por favor, crie sua senha.';
+        }
     </script>
 </body>
 </html>
