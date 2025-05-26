@@ -1,34 +1,28 @@
-document
-  .getElementById("loginForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); // Impede o envio padrão do formulário
+<script>
+    // Inicialize o Netlify Identity
+    netlifyIdentity.init();
 
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const message = document.getElementById("message");
-
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-
-    // Credenciais pré-definidas (substitua por valores seguros)
-    const validUsername = "admin";
-    const validPassword = "123456"; // Em produção, use algo mais seguro!
-
-    if (username === validUsername && password === validPassword) {
-      // Salva o status de login no localStorage
-      localStorage.setItem("isLoggedIn", "true");
-      window.location.href = "index.html"; // Redireciona para a página principal
-    } else {
-      message.textContent = "Usuário ou senha inválidos!";
-      usernameInput.value = "";
-      passwordInput.value = "";
-      usernameInput.focus();
+    // Verifica se o usuário já está logado ao carregar a página
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = 'index.html';
     }
-  });
 
-// Verifica se o usuário já está logado ao carregar a página
-window.onload = function () {
-  if (localStorage.getItem("isLoggedIn") === "true") {
-    window.location.href = "index.html";
-  }
-};
+    // Manipula eventos de login
+    netlifyIdentity.on('login', user => {
+        localStorage.setItem('isLoggedIn', 'true');
+        document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
+        window.location.href = 'index.html';
+    });
+
+    // Manipula eventos de logout
+    netlifyIdentity.on('logout', () => {
+        localStorage.removeItem('isLoggedIn');
+        document.getElementById('message').textContent = 'Logout realizado.';
+        window.location.href = 'login.html';
+    });
+
+    // Manipula erros
+    netlifyIdentity.on('error', err => {
+        document.getElementById('message').textContent = 'Erro: ' + err.message;
+    });
+</script>
