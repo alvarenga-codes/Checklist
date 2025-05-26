@@ -43,13 +43,17 @@
         });
 
         // Captura o token de convite e força o modo de inscrição
-        const urlHash = window.location.hash.substring(1);
-        if (urlHash.includes('invite_token=') || urlHash.includes('confirmation_token=')) {
-            console.log('Token de convite detectado:', urlHash);
+        const urlHash = window.location.hash.substring(1); // Remove o '#' inicial
+        console.log('Hash da URL:', urlHash);
+
+        if (urlHash && urlHash.includes('invite_token=')) {
+            const urlParams = new URLSearchParams(urlHash);
+            const inviteToken = urlParams.get('invite_token');
+            console.log('Token de convite detectado:', inviteToken);
             netlifyIdentity.open('signup'); // Força o modo de inscrição
             document.getElementById('message').textContent = 'Por favor, crie sua senha.';
         } else {
-            console.log('Nenhum token de convite detectado na URL:', urlHash);
+            console.log('Nenhum token de convite detectado na URL.');
         }
     </script>
 </body>
