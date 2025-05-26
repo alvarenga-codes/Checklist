@@ -15,10 +15,8 @@
         <p id="message"></p>
     </div>
     <script>
-        // Inicialize o Netlify Identity com contêiner específico
-        netlifyIdentity.init({
-            container: document.querySelector('body') // Usa o body como contêiner
-        });
+        // Inicialize o Netlify Identity corretamente
+        netlifyIdentity.init(); // Removemos o container ou usamos um seletor CSS correto
 
         // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -45,7 +43,7 @@
         });
 
         // Captura o token de convite (se presente)
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.hash.substring(1));
         const inviteToken = urlParams.get('invite_token');
         if (inviteToken) {
             netlifyIdentity.open('signup'); // Força o modo de inscrição
