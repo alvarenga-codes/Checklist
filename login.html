@@ -15,8 +15,8 @@
         <p id="message"></p>
     </div>
     <script>
-        // Inicialize o Netlify Identity corretamente
-        netlifyIdentity.init(); // Removemos o container ou usamos um seletor CSS correto
+        // Inicialize o Netlify Identity
+        netlifyIdentity.init();
 
         // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -42,12 +42,14 @@
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
 
-        // Captura o token de convite (se presente)
-        const urlParams = new URLSearchParams(window.location.hash.substring(1));
-        const inviteToken = urlParams.get('invite_token');
-        if (inviteToken) {
+        // Captura o token de convite e força o modo de inscrição
+        const urlHash = window.location.hash.substring(1);
+        if (urlHash.includes('invite_token=') || urlHash.includes('confirmation_token=')) {
+            console.log('Token de convite detectado:', urlHash);
             netlifyIdentity.open('signup'); // Força o modo de inscrição
             document.getElementById('message').textContent = 'Por favor, crie sua senha.';
+        } else {
+            console.log('Nenhum token de convite detectado na URL:', urlHash);
         }
     </script>
 </body>
