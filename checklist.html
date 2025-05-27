@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-list PDDE</title>
+    <link rel="stylesheet" href="styles.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGHVWT9W69"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-SGHVWT9W69');
+    </script>
+</head>
+
+<body>
+    <h1 class="title">Check-list PDDE</h1>
+    <fieldset>
+        <legend>Informações do Processo</legend>
+
+        <div class="form-group-title">
+            <label for="processo">Processo nº</label>
+            <input type="text" id="processo" name="processo" placeholder="0000-00000000/0000-00" pattern="\d{4}-\d{8}/\d{4}-\d{2}" required>
+        </div>
+
+        <div class="form-group-title">
+            <label for="programa">Programa:</label>
+            <select id="programa" name="programa" required>
+                <option value="" disabled selected required="">Selecione um programa</option>
+                <!-- Lista incluída pela function carregarProgramas -->
+            </select>
+
+            <label for="exercicio">Ano:</label>
+            <input type="number" id="exercicio" name="exercicio" placeholder="aaaa" pattern="\d{4}" required>
+        </div>
+
+        <div class="form-group-acoes">
+            <label>Ações:</label>
+            <!-- Lista incluída pela function renderizarAcoes -->
+        </div>
+
+        <div class="form-group-title">
+            <label for="unidade-escolar">Unidade Escolar:</label>
+            <select id="unidade-escolar" name="unidade-escolar" required>
+                <option value="" disabled selected required>Selecione uma Unidade Escolar</option>
+                <!-- Lista incluída pela function carregarEscolas -->
+            </select>
+        </div>
+    </fieldset>
+
+    <!-- Template para linhas dos checklists -->
+    <template id="row-template">
+        <div class="checklist-row">
+            <div class="checklist-cell checklist-item"></div>
+            <div class="checklist-cell checklist-radio">
+                <input type="radio"><label></label>
+            </div>
+            <div class="checklist-cell checklist-radio pendencia">
+                <input type="radio"><label></label>
+            </div>
+        </div>
+    </template>
+
+    <!-- TEMPLATE OFÍCIO -->
+    <fieldset id="oficio-section">
+        <legend>Ofício</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="oficio-container" value="nao-se-aplica">
+            <span></span> Não se aplicam (Conferência manual)
+        </label>
+        <div class="dynamic-container" id="oficio-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="oficio-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- LÓGICA DE ADD DA ATA DE PRIORIDADES -->
+    <!-- receptáculo de adição -->
+    <div id="ata-prioridades-receptacle" class="ajuste-container">
+        <!-- Os templates serão adicionados aqui -->
+    </div>
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-ata-prioridades"><span>+</span> Ata de Prioridades</button>
+
+    <!-- TEMPLATE ATA DE PRIORIDADES -->
+    <template id="template-ata-prioridades">
+        <fieldset id="ata-prioridades-section">
+            <legend>Ata de Prioridades</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div class="dynamic-container" id="ata-prioridades-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="ata-prioridades-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE PLANO DE AÇÃO/ATENDIMENTO -->
+    <!-- receptáculo de adição -->
+    <div id="plano-acao-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-plano-acao"><span>+</span> Plano de ação</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-plano-acao">
+        <fieldset id="plano-acao-section">
+            <legend>Plano de ação/atendimento</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="plano-acao-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="plano-acao-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE EXTRATO CONTA CORRENTE -->
+    <!-- container de adição -->
+    <div id="cc-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-cc"><span>+</span> Conta corrente</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-cc">
+        <fieldset id="cc-section">
+            <legend>Extrato bancário: conta corrente</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="cc-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="cc-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE EXTRATO CONTA INVESTIMENTO -->
+    <!-- container de adição -->
+    <div id="ci-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-ci"><span>+</span> Conta investimento</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-ci">
+        <fieldset id="ci-section">
+            <legend>Extrato bancário: conta investimento</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="ci-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="ci-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE DEVOLUÇÃO DE VALORES A CONTA DA UNIDADE ESCOLAR -->
+    <!-- container de adição -->
+    <div id="dev-escola-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-dev-escola"><span>+</span> Devolução: conta escola</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-dev-escola">
+        <fieldset id="dev-escola-section">
+            <legend>Devolução de valores a conta da unidade escolar</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="dev-escola-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="dev-escola-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE DEVOLUÇÃO DE VALORES AO FNDE -->
+    <fieldset id="dev-fnde-section">
+        <legend>Devolução de valores ao FNDE</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="dev-fnde-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="dev-fnde-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="dev-fnde-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE COMPROVANTES DE COMPRA -->
+    <!-- container de adição -->
+    <div id="docs-compras-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-docs-compras"><span>+</span> Documentos de compras</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-docs-compras">
+        <fieldset id="docs-compras-section">
+            <legend>Comprovantes de compra</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="docs-compras-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="docs-compras-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE NOTA FISCAL -->
+            <section id="nf-section">
+                <h2 class="subtitle">Nota fiscal</h2>
+                <div id="nf-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="nf-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+            <!-- TEMPLATE ORÇAMENTO 1 -->
+            <section id="o-um-section">
+                <h2 class="subtitle">Orçamento 1</h2>
+                <div id="o-um-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="o-um-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE ORÇAMENTO 2 -->
+            <section id="o-dois-section">
+                <h2 class="subtitle">Orçamento 2</h2>
+                <div id="o-dois-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="o-dois-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE ORÇAMENTO 3 -->
+            <section id="o-tres-section">
+                <h2 class="subtitle">Orçamento 3</h2>
+                <div id="o-tres-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="o-tres-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE CONTRATO DE PRESTAÇÃO DE SERVIÇO -->
+            <section id="ct-servico-section">
+                <h2 class="subtitle">Contrato de prestação de serviço</h2>
+                <label>
+                    <input type="checkbox" class="nao-se-aplica-checkbox" data-target="ct-servico-container" value="nao-se-aplica">
+                    <span></span> Não se aplicam
+                </label>
+                <div id="ct-servico-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="ct-servico-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE PROCESSO DE INCORPORAÇÃO DE BENS -->
+            <section id="proc-incorp-section">
+                <h2 class="subtitle">Processo de incorporação de bens</h2>
+                <label>
+                    <input type="checkbox" class="nao-se-aplica-checkbox" data-target="proc-incorp-container" value="nao-se-aplica">
+                    <span></span> Não se aplicam
+                </label>
+                <div id="proc-incorp-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="proc-incorp-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+        </fieldset>
+    </template>
+
+    <!-- TEMPLATE REX -->
+    <fieldset id="rex-section">
+        <legend>REX</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="rex-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="rex-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="rex-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE PARECER CONSELHO FISCAL -->
+    <fieldset id="parecer-conselho-fiscal-section">
+        <legend>Parecer Conselho Fiscal</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="parecer-conselho-fiscal-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="parecer-conselho-fiscal-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="parecer-conselho-fiscal-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE ATA DE APROVAÇÃO PCA -->
+    <fieldset id="ata-aprov-pca-section">
+        <legend>Ata de Aprovação PCA</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="ata-aprov-pca-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="ata-aprov-pca-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="ata-aprov-pca-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE ATA DE CONSTITUIÇÃO UEx -->
+    <fieldset id="ata-uex-section">
+        <legend>Ata de Constituição UEx</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="ata-uex-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="ata-uex-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="ata-uex-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE TERMO CONSELHO ESCOLAR -->
+    <fieldset id="termo-conselho-escolar-section">
+        <legend>Termo Conselho Escolar</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="termo-conselho-escolar-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="termo-conselho-escolar-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="termo-conselho-escolar-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE ATA ESCOLHA CONSELHO ESCOLAR -->
+    <fieldset id="ata-conselho-escolar-section">
+        <legend>Ata Escolha Conselho Escolar</legend>
+        <label>
+            <input type="checkbox" class="nao-se-aplica-checkbox" data-target="ata-conselho-escolar-container" value="nao-se-aplica">
+            <span></span> Não se aplicam
+        </label>
+        <div id="ata-conselho-escolar-container" class="dynamic-container">
+            <div class="checklist-grid">
+                <div class="checklist-header">
+                    <div class="checklist-cell header">Item</div>
+                    <div class="checklist-cell header">Aprovado</div>
+                    <div class="checklist-cell header">Pendência</div>
+                </div>
+                <div id="ata-conselho-escolar-table-body" class="checklist-body">
+                    <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </div>
+            <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+        </div>
+    </fieldset>
+
+    <!-- TEMPLATE QUADRO DEMONSTRATIVO -->
+    <!-- container de adição -->
+    <div id="qd-receptacle" class="ajuste-container"></div>
+
+    <!-- botão de adicionar -->
+    <button class="add-button" type="button" id="add-qd"><span>+</span> Quadro Demonstrativo</button>
+
+    <!-- quando add o botão, adicionar style="display:none;" abaixo -->
+    <template id="template-qd">
+        <fieldset id="qd-section">
+            <legend>Quadro Demonstrativo</legend>
+            <!-- As linhas de cabeçalho e botão de remoção serão adicionadas dinamicamente via JavaScript -->
+            <div id="qd-container" class="dynamic-container">
+                <div class="checklist-grid">
+                    <div class="checklist-header">
+                        <div class="checklist-cell header">Item</div>
+                        <div class="checklist-cell header">Aprovado</div>
+                        <div class="checklist-cell header">Pendência</div>
+                    </div>
+                    <div id="qd-table-body" class="checklist-body">
+                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        <!-- Adição da lINHA 48 desse HTML -->
+                    </div>
+                </div>
+                <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+            </div>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE BLOCO 01 -->
+            <section id="bloco-01-section">
+                <h2 class="subtitle">Bloco 01</h2>
+                <div id="bloco-01-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="bloco-01-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE BLOCO 02 -->
+            <section id="bloco-02-section">
+                <h2 class="subtitle">Bloco 02</h2>
+                <div id="bloco-02-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="bloco-02-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+            <br>
+            <hr>
+
+            <!-- TEMPLATE BLOCO 03 -->
+            <section id="bloco-03-section">
+                <h2 class="subtitle">Bloco 03</h2>
+                <div id="bloco-03-container" class="dynamic-container">
+                    <div class="checklist-grid">
+                        <div class="checklist-header">
+                            <div class="checklist-cell header">Item</div>
+                            <div class="checklist-cell header">Aprovado</div>
+                            <div class="checklist-cell header">Pendência</div>
+                        </div>
+                        <div id="bloco-03-table-body" class="checklist-body">
+                            <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
+                        </div>
+                    </div>
+                    <!-- As linhas de observação serão adicionadas dinamicamente via JavaScript -->
+                </div>
+            </section>
+        </fieldset>
+    </template>
+
+    <!-- Botões de salvar, carregar e imprimir -->
+    <div class="save-load-print-container">
+        <button id="print-button" class="print-button">Imprimir</button>
+        <button disabled id="save-button" class="save-button">Salvar</button>
+        <button disabled id="load-button" class="load-button">Carregar</button>
+    </div>
+    <footer>
+        <p>Alguns direitos reservados - Rodrigo Alvarenga</p>
+    </footer>
+    <script src="array.js"></script>
+    <script src="functionPrograms.js"></script>
+    <script src="renderPrograms.js"></script>
+
+</body>
+
+</html>
