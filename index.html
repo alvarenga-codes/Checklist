@@ -41,6 +41,7 @@
                 console.log('Tentando abrir signup com token:', inviteToken);
                 try {
                     netlifyIdentity.open('signup');
+                    console.log('Signup chamado com sucesso.');
                     document.getElementById('message').textContent = 'Por favor, crie sua senha.';
                     localStorage.removeItem('inviteToken');
                 } catch (error) {
@@ -53,16 +54,23 @@
         }
 
         if (localStorage.getItem('isLoggedIn') === 'true') {
+            console.log('Usuário já logado, redirecionando para index.html...');
             window.location.href = 'index.html';
         }
 
+        netlifyIdentity.on('init', user => {
+            console.log('Netlify Identity inicializado:', user ? 'Usuário presente' : 'Nenhum usuário');
+        });
+
         netlifyIdentity.on('login', user => {
+            console.log('Evento de login disparado:', user);
             localStorage.setItem('isLoggedIn', 'true');
             document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
             window.location.href = 'index.html';
         });
 
         netlifyIdentity.on('logout', () => {
+            console.log('Evento de logout disparado.');
             localStorage.removeItem('isLoggedIn');
             document.getElementById('message').textContent = 'Logout realizado.';
             window.location.href = 'login.html';
@@ -73,7 +81,11 @@
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
 
-        window.onload = checkInviteToken;
+        window.onload = function() {
+            console.log('Página carregada, verificando token...');
+            checkInviteToken();
+        };
+
         setTimeout(checkInviteToken, 1000);
     </script>
 </body>
