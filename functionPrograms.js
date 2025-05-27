@@ -1063,11 +1063,11 @@ function printPendenciasReport() {
     }
     //Tratamento para Termo Conselho Escolar
     if (legend.textContent == "Termo Conselho Escolar") {
-      return "Termo Conselho Escolar";
+      return "Termo de Posse do Conselho Escolar";
     }
     //Tratamento para Ata Escolha Conselho Escolar
     if (legend.textContent == "Ata Escolha Conselho Escolar") {
-      return "Ata Escolha Conselho Escolar";
+      return "Ata de Escolha e Posse do Presidente do Conselho Escolar";
     }
 
     if (headerDiv) {
