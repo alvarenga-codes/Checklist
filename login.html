@@ -47,6 +47,18 @@
                 } catch (error) {
                     console.error('Erro ao abrir signup:', error);
                     document.getElementById('message').textContent = 'Erro ao abrir o formulário. Verifique o console.';
+                    // Tenta forçar o signup manualmente
+                    try {
+                        netlifyIdentity.gotrue.signup({ token: inviteToken }).then(user => {
+                            console.log('Signup manual bem-sucedido:', user);
+                            document.getElementById('message').textContent = 'Registro bem-sucedido! Faça login.';
+                        }).catch(err => {
+                            console.error('Erro no signup manual:', err);
+                            document.getElementById('message').textContent = 'Erro no registro manual: ' + err.message;
+                        });
+                    } catch (manualError) {
+                        console.error('Erro ao tentar signup manual:', manualError);
+                    }
                 }
             } else {
                 console.log('Nenhum token de convite detectado na URL.');
