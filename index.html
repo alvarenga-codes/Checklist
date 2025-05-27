@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Checklist Uniag</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Script do Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-        // Captura o token de convite imediatamente
         const initialHash = window.location.hash.substring(1);
         let inviteToken = null;
         if (initialHash.includes('invite_token=')) {
@@ -26,10 +24,8 @@
         <p id="message"></p>
     </div>
     <script>
-        // Inicialize o Netlify Identity
         netlifyIdentity.init();
 
-        // Função para capturar e usar o token
         function checkInviteToken() {
             const urlHash = window.location.hash.substring(1);
             const urlQuery = new URLSearchParams(window.location.search);
@@ -42,51 +38,42 @@
             console.log('Query da URL:', window.location.search);
 
             if (inviteToken) {
-                console.log('Token de convite detectado:', inviteToken);
+                console.log('Tentando abrir signup com token:', inviteToken);
                 try {
                     netlifyIdentity.open('signup');
                     document.getElementById('message').textContent = 'Por favor, crie sua senha.';
                     localStorage.removeItem('inviteToken');
                 } catch (error) {
-                    console.error('Erro ao abrir o signup:', error);
-                    document.getElementById('message').textContent = 'Erro ao abrir o formulário. Tente novamente.';
+                    console.error('Erro ao abrir signup:', error);
+                    document.getElementById('message').textContent = 'Erro ao abrir o formulário. Verifique o console.';
                 }
             } else {
                 console.log('Nenhum token de convite detectado na URL.');
             }
         }
 
-        // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
             window.location.href = 'index.html';
         }
 
-        // Manipula eventos de login
         netlifyIdentity.on('login', user => {
             localStorage.setItem('isLoggedIn', 'true');
             document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
             window.location.href = 'index.html';
         });
 
-        // Manipula eventos de logout
         netlifyIdentity.on('logout', () => {
             localStorage.removeItem('isLoggedIn');
             document.getElementById('message').textContent = 'Logout realizado.';
             window.location.href = 'login.html';
         });
 
-        // Manipula erros
         netlifyIdentity.on('error', err => {
             console.error('Erro do Netlify Identity:', err);
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
 
-        // Executa a verificação do token ao carregar a página
-        window.onload = function() {
-            checkInviteToken();
-        };
-
-        // Tenta novamente após 1 segundo para capturar redirecionamentos
+        window.onload = checkInviteToken;
         setTimeout(checkInviteToken, 1000);
     </script>
 </body>
