@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Checklist Uniag</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Script do Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        const initialHash = window.location.hash.substring(1);
+        let inviteToken = null;
+        if (initialHash.includes('invite_token=')) {
+            const urlParams = new URLSearchParams(initialHash);
+            inviteToken = urlParams.get('invite_token');
+            localStorage.setItem('inviteToken', inviteToken);
+            console.log('Token capturado no head:', inviteToken);
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
@@ -15,59 +24,68 @@
         <p id="message"></p>
     </div>
     <script>
-        // Inicialize o Netlify Identity
         netlifyIdentity.init();
 
-        // Função para capturar o token
         function checkInviteToken() {
-            const urlHash = window.location.hash.substring(1); // Fragmento (#)
-            const urlQuery = new URLSearchParams(window.location.search); // Parâmetros de query (?)
+            const urlHash = window.location.hash.substring(1);
+            const urlQuery = new URLSearchParams(window.location.search);
             const inviteTokenFromHash = urlHash.includes('invite_token=') ? new URLSearchParams(urlHash).get('invite_token') : null;
             const inviteTokenFromQuery = urlQuery.get('invite_token');
-            const inviteToken = inviteTokenFromHash || inviteTokenFromQuery;
+            const storedInviteToken = localStorage.getItem('inviteToken');
+            const inviteToken = inviteTokenFromHash || inviteTokenFromQuery || storedInviteToken;
 
             console.log('Hash da URL:', urlHash);
             console.log('Query da URL:', window.location.search);
 
             if (inviteToken) {
-                console.log('Token de convite detectado:', inviteToken);
-                netlifyIdentity.open('signup'); // Força o modo de inscrição
-                document.getElementById('message').textContent = 'Por favor, crie sua senha.';
+                console.log('Tentando abrir signup com token:', inviteToken);
+                try {
+                    netlifyIdentity.open('signup');
+                    console.log('Signup chamado com sucesso.');
+                    document.getElementById('message').textContent = 'Por favor, crie sua senha.';
+                    localStorage.removeItem('inviteToken');
+                } catch (error) {
+                    console.error('Erro ao abrir signup:', error);
+                    document.getElementById('message').textContent = 'Erro ao abrir o formulário. Verifique o console.';
+                }
             } else {
                 console.log('Nenhum token de convite detectado na URL.');
             }
         }
 
-        // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
+            console.log('Usuário já logado, redirecionando para index.html...');
             window.location.href = 'index.html';
         }
 
-        // Manipula eventos de login
+        netlifyIdentity.on('init', user => {
+            console.log('Netlify Identity inicializado:', user ? 'Usuário presente' : 'Nenhum usuário');
+        });
+
         netlifyIdentity.on('login', user => {
+            console.log('Evento de login disparado:', user);
             localStorage.setItem('isLoggedIn', 'true');
             document.getElementById('message').textContent = 'Login bem-sucedido! Redirecionando...';
             window.location.href = 'index.html';
         });
 
-        // Manipula eventos de logout
         netlifyIdentity.on('logout', () => {
+            console.log('Evento de logout disparado.');
             localStorage.removeItem('isLoggedIn');
             document.getElementById('message').textContent = 'Logout realizado.';
             window.location.href = 'login.html';
         });
 
-        // Manipula erros
         netlifyIdentity.on('error', err => {
+            console.error('Erro do Netlify Identity:', err);
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
 
-        // Executa a verificação do token ao carregar a página
         window.onload = function() {
+            console.log('Página carregada, verificando token...');
             checkInviteToken();
         };
 
-        // Tenta novamente após 1 segundo para capturar redirecionamentos
         setTimeout(checkInviteToken, 1000);
     </script>
 </body>
