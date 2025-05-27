@@ -43,18 +43,16 @@
 
             if (inviteToken) {
                 console.log('Token de convite detectado:', inviteToken);
-                // Tenta abrir o signup e remove o token após uso
-                netlifyIdentity.open('signup');
-                document.getElementById('message').textContent = 'Por favor, crie sua senha.';
-                localStorage.removeItem('inviteToken');
-            } else {
-                console.log('Nenhum token de convite detectado na URL. Verificando stored token...');
-                if (storedInviteToken) {
-                    console.log('Usando token armazenado:', storedInviteToken);
+                try {
                     netlifyIdentity.open('signup');
                     document.getElementById('message').textContent = 'Por favor, crie sua senha.';
                     localStorage.removeItem('inviteToken');
+                } catch (error) {
+                    console.error('Erro ao abrir o signup:', error);
+                    document.getElementById('message').textContent = 'Erro ao abrir o formulário. Tente novamente.';
                 }
+            } else {
+                console.log('Nenhum token de convite detectado na URL.');
             }
         }
 
@@ -79,8 +77,8 @@
 
         // Manipula erros
         netlifyIdentity.on('error', err => {
+            console.error('Erro do Netlify Identity:', err);
             document.getElementById('message').textContent = 'Erro: ' + err.message;
-            console.log('Erro do Netlify Identity:', err);
         });
 
         // Executa a verificação do token ao carregar a página
