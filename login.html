@@ -18,6 +18,26 @@
         // Inicialize o Netlify Identity
         netlifyIdentity.init();
 
+        // Função para capturar o token
+        function checkInviteToken() {
+            const urlHash = window.location.hash.substring(1); // Fragmento (#)
+            const urlQuery = new URLSearchParams(window.location.search); // Parâmetros de query (?)
+            const inviteTokenFromHash = urlHash.includes('invite_token=') ? new URLSearchParams(urlHash).get('invite_token') : null;
+            const inviteTokenFromQuery = urlQuery.get('invite_token');
+            const inviteToken = inviteTokenFromHash || inviteTokenFromQuery;
+
+            console.log('Hash da URL:', urlHash);
+            console.log('Query da URL:', window.location.search);
+
+            if (inviteToken) {
+                console.log('Token de convite detectado:', inviteToken);
+                netlifyIdentity.open('signup'); // Força o modo de inscrição
+                document.getElementById('message').textContent = 'Por favor, crie sua senha.';
+            } else {
+                console.log('Nenhum token de convite detectado na URL.');
+            }
+        }
+
         // Verifica se o usuário já está logado
         if (localStorage.getItem('isLoggedIn') === 'true') {
             window.location.href = 'index.html';
@@ -42,19 +62,13 @@
             document.getElementById('message').textContent = 'Erro: ' + err.message;
         });
 
-        // Captura o token de convite e força o modo de inscrição
-        const urlHash = window.location.hash.substring(1); // Remove o '#' inicial
-        console.log('Hash da URL:', urlHash);
+        // Executa a verificação do token ao carregar a página
+        window.onload = function() {
+            checkInviteToken();
+        };
 
-        if (urlHash && urlHash.includes('invite_token=')) {
-            const urlParams = new URLSearchParams(urlHash);
-            const inviteToken = urlParams.get('invite_token');
-            console.log('Token de convite detectado:', inviteToken);
-            netlifyIdentity.open('signup'); // Força o modo de inscrição
-            document.getElementById('message').textContent = 'Por favor, crie sua senha.';
-        } else {
-            console.log('Nenhum token de convite detectado na URL.');
-        }
+        // Tenta novamente após 1 segundo para capturar redirecionamentos
+        setTimeout(checkInviteToken, 1000);
     </script>
 </body>
 </html>
