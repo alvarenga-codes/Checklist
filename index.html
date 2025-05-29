@@ -101,6 +101,7 @@
             const password = document.getElementById('password').value;
             const correctPassword = 'PDDE2025';
             if (password === correctPassword) {
+                localStorage.setItem('isAuthenticated', 'true');
                 window.location.href = 'checklist.html';
             } else {
                 document.getElementById('message').textContent = 'Senha incorreta. Tente novamente.';
