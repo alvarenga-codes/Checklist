@@ -1551,7 +1551,7 @@ const qdBlocoTresData = [
     hasDetails: true,
     classDetails: "hidden text-pendencia",
     detailsType: "textarea",
-    detailsRow: "1",
+    detailsRow: "2",
     detailsCols: "18",
     detailsLabel: "",
     detailsName: "quadro-demonstrativo-itens",
