@@ -1191,7 +1191,6 @@ function printPendenciasReport() {
         const detailsContainer = row.querySelector(
           ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden), .text-pendencia:not(.hidden)"
         );
-        console.log(detailsContainer);
         if (detailsContainer) {
           // Coleta detalhes de texto
           const textInputs =
@@ -1236,7 +1235,7 @@ function printPendenciasReport() {
             }
           }
 
-          // Coleta detalhes de textarea de observações
+          // Coleta detalhes de textarea
           const textareas = detailsContainer.querySelectorAll("textarea");
           textareas.forEach((textarea) => {
             if (textarea.value) {
@@ -1245,7 +1244,7 @@ function printPendenciasReport() {
                   textarea.value
                 }`
               );
-            }
+                          } 
           });
         }
 
@@ -1277,10 +1276,7 @@ function printPendenciasReport() {
 
     // Se for um tipo especial com subseções
     if (sectionType === "docs-compras" || sectionType === "qd") {
-      //código da IA
-      // const mainRows = fieldset.querySelectorAll(
-      //   ":scope > .checklist-grid > .checklist-body > .checklist-row"
-      // );
+  
       const mainRows = fieldset.querySelectorAll(
         ":scope > .dynamic-container > .checklist-grid > .checklist-body > .checklist-row"
       );
@@ -1300,9 +1296,10 @@ function printPendenciasReport() {
 
           // Verifica se há detalhes para este item
           const detailsContainer = row.querySelector(
-            ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden)"
+            ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden), .text-pendencia:not(.hidden)"
           );
           if (detailsContainer) {
+            console.log(`DetailsContainer encontrado para "${item.title}": ID=${detailsContainer.id}, Classes=${detailsContainer.className}`);
             // Coleta detalhes de texto
             const textInputs =
               detailsContainer.querySelectorAll('input[type="text"]');
@@ -1350,6 +1347,7 @@ function printPendenciasReport() {
             const textareas = detailsContainer.querySelectorAll("textarea");
             textareas.forEach((textarea) => {
               if (textarea.value) {
+                console.log(textarea.value);
                 item.details.push(
                   `${
                     textarea.previousElementSibling?.textContent || "Observação"
@@ -1402,7 +1400,7 @@ function printPendenciasReport() {
 
           // Verifica se há detalhes para este item
           const detailsContainer = row.querySelector(
-            ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden)"
+            ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden), .text-pendencia:not(.hidden)"
           );
           if (detailsContainer) {
             // Coleta detalhes de texto
@@ -1453,9 +1451,7 @@ function printPendenciasReport() {
             textareas.forEach((textarea) => {
               if (textarea.value) {
                 item.details.push(
-                  `${
-                    textarea.previousElementSibling?.textContent || "Observação"
-                  }: ${textarea.value}`
+                  `${textarea.value}`
                 );
               }
             });
