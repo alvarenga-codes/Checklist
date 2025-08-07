@@ -888,7 +888,7 @@ function printPendenciasReport() {
       Justificativa: "Justificativa ausente",
       "GRU (FNDE)": "GRU (FNDE) ausente",
       "Docs de compra (NF, orçamentos, comprovantes...)":
-        "Despesa realizada sem documentos comprobatórios (NF, mín 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço",
+        "Despesa realizada sem documentos comprobatórios (NF, mín 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço)",
       "Razão social e CNPJ da UEx": "Razão social e/ou CNPJ da UEx incorretos",
       "Carimbo de recebido": "Carimbo de recebido",
       "Carimbo de identificação do programa":
