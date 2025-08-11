@@ -1798,6 +1798,7 @@ function loadFormData() {
                     });
                 }
                 alert("Dados carregados com sucesso!");
+                window.scrollTo(0, 0);
             } catch (error) {
                 console.error("Erro ao processar o arquivo JSON:", error);
                 alert("Erro ao carregar o arquivo. Verifique o console para mais detalhes.");
