@@ -90,6 +90,7 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="date"],
+input[type="password"],
 select,
 textarea {
   width: 100%;
@@ -100,9 +101,14 @@ textarea {
   transition: border-color 0.3s;
 }
 
+input[type="password"] {
+  display: inline;
+}
+
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus,
+input[type="password"]:focus,
 select:focus,
 textarea:focus {
   border-color: var(--primary-color);
@@ -339,20 +345,24 @@ input[type="checkbox"] + span {
 }
 
 /* Estilo para botões */
-button {
+button,
+.tabela-excel {
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-transform: uppercase;
   font-weight: 500;
   transition: background-color 0.3s, transform 0.2s;
 }
 
-button:hover {
+button:hover,
+.tabela-excel:hover {
   transform: translateY(-2px);
 }
 
-button:active {
+button:active,
+.tabela-excel:active {
   transform: translateY(0);
 }
 
@@ -430,13 +440,30 @@ hr {
   background-color: var(--hover-color);
 }
 
+.tabela-excel {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.tabela-excel:hover {
+  background-color: var(--border-color);
+}
+
+.tabela-excel:visited {
+  color: var(--text-color);
+}
+
 .save-button,
 .load-button,
-.print-button {
+.print-button,
+.tabela-excel {
   font-size: 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px var(--shadow-color);
-  text-transform: uppercase;
 }
 
 .save-button {
@@ -494,6 +521,7 @@ button:disabled:hover {
   background-color: var(--secondary-color);
   transform: translateY(0);
 }
+
 footer {
   display: flex;
   justify-content: center;
@@ -541,7 +569,7 @@ footer p {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 490px) {
   .months-container {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -581,4 +609,39 @@ footer p {
   .subtitle {
     font-size: 14pt;
   }
+}
+
+/*Estilo do login*/
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.login-container label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #00ddeb;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+.login-container button:hover {
+    background-color: #00b4c4;
+}
+
+#message {
+    color: red;
+    margin-top: 10px;
 }
