@@ -1244,7 +1244,7 @@ function printPendenciasReport() {
                   textarea.value
                 }`
               );
-                          } 
+            }
           });
         }
 
@@ -1276,7 +1276,6 @@ function printPendenciasReport() {
 
     // Se for um tipo especial com subseções
     if (sectionType === "docs-compras" || sectionType === "qd") {
-  
       const mainRows = fieldset.querySelectorAll(
         ":scope > .dynamic-container > .checklist-grid > .checklist-body > .checklist-row"
       );
@@ -1299,7 +1298,9 @@ function printPendenciasReport() {
             ".details-container:not(.hidden), .text-group:not(.hidden), .checkbox-group:not(.hidden), .group-date:not(.hidden), .text-pendencia:not(.hidden)"
           );
           if (detailsContainer) {
-            console.log(`DetailsContainer encontrado para "${item.title}": ID=${detailsContainer.id}, Classes=${detailsContainer.className}`);
+            console.log(
+              `DetailsContainer encontrado para "${item.title}": ID=${detailsContainer.id}, Classes=${detailsContainer.className}`
+            );
             // Coleta detalhes de texto
             const textInputs =
               detailsContainer.querySelectorAll('input[type="text"]');
@@ -1450,9 +1451,7 @@ function printPendenciasReport() {
             const textareas = detailsContainer.querySelectorAll("textarea");
             textareas.forEach((textarea) => {
               if (textarea.value) {
-                item.details.push(
-                  `${textarea.value}`
-                );
+                item.details.push(`${textarea.value}`);
               }
             });
           }
@@ -1591,468 +1590,222 @@ function printPendenciasReport() {
 
 //EM DESENVOLVIMENTO
 
-// Função para salvar os dados do formulário
+// Função para salvar os dados do formulário (IGNORA FIELDSETS SEM ID)
 function saveFormData() {
-  // Coleta todos os dados do formulário
-  const formData = {};
-
-  // Informações gerais - com verificação de existência
-  const unidadeEscolarElement = document.getElementById("unidade-escolar");
-  if (unidadeEscolarElement) {
-    formData.unidadeEscolar = unidadeEscolarElement.value || "";
-  }
-
-  const programaElement = document.getElementById("programa");
-  if (programaElement) {
-    formData.programa = programaElement.value || "";
-  }
-
-  const processoElement = document.getElementById("processo");
-  if (processoElement) {
-    formData.processo = processoElement.value || "";
-  }
-
-  const exercicioElement = document.getElementById("exercicio");
-  if (exercicioElement) {
-    formData.exercicio = exercicioElement.value || "";
-  }
-
-  // Ações selecionadas
-  formData.acoes = Array.from(
-    document.querySelectorAll('input[name="acoes[]"]:checked')
-  ).map((cb) => cb.value);
-
-  // Função para coletar dados de um fieldset
-  function collectFieldsetData(fieldset) {
-    const fieldsetData = {};
-
-    // Coleta cabeçalho (se existir)
-    const headerInput = fieldset.querySelector(
-      '.form-group.box-type input[type="text"]'
-    );
-    if (headerInput) {
-      fieldsetData.header = headerInput.value;
-    }
-
-    // Coleta radios
-    const radios = fieldset.querySelectorAll('input[type="radio"]:checked');
-    radios.forEach((radio) => {
-      fieldsetData[radio.name] = radio.value;
-    });
-
-    // Coleta checkboxes
-    const checkboxGroups = fieldset.querySelectorAll(".checkbox-group");
-    checkboxGroups.forEach((group) => {
-      const groupName = group.id;
-      fieldsetData[groupName] = Array.from(
-        group.querySelectorAll('input[type="checkbox"]:checked')
-      ).map((cb) => cb.value);
-    });
-
-    // Coleta inputs de texto e data
-    const textInputs = fieldset.querySelectorAll(
-      'input[type="text"]:not([id$="-observacoes"])'
-    );
-    textInputs.forEach((input) => {
-      if (input.value && !input.closest(".form-group.box-type")) {
-        fieldsetData[input.name] = input.value;
-      }
-    });
-
-    const dateInputs = fieldset.querySelectorAll('input[type="date"]');
-    dateInputs.forEach((input) => {
-      if (input.value) {
-        fieldsetData[input.name] = input.value;
-      }
-    });
-
-    // Coleta observações
-    const observacoesTextarea = fieldset.querySelector(
-      'textarea[id*="-observacoes"]'
-    );
-    if (observacoesTextarea) {
-      fieldsetData.observacoes = observacoesTextarea.value;
-    }
-
-    // Coleta dados das subseções (para documentos de compra e quadro demonstrativo)
-    const subsections = fieldset.querySelectorAll("section");
-    if (subsections.length > 0) {
-      fieldsetData.subsections = {};
-
-      subsections.forEach((section) => {
-        const sectionId = section.id;
-        if (sectionId) {
-          fieldsetData.subsections[sectionId] = collectSubsectionData(section);
-        }
-      });
-    }
-
-    return fieldsetData;
-  }
-
-  // Função para coletar dados de uma subseção
-  function collectSubsectionData(section) {
-    const sectionData = {};
-
-    // Coleta radios
-    const radios = section.querySelectorAll('input[type="radio"]:checked');
-    radios.forEach((radio) => {
-      sectionData[radio.name] = radio.value;
-    });
-
-    // Coleta checkboxes
-    const checkboxGroups = section.querySelectorAll(".checkbox-group");
-    checkboxGroups.forEach((group) => {
-      const groupName = group.id;
-      sectionData[groupName] = Array.from(
-        group.querySelectorAll('input[type="checkbox"]:checked')
-      ).map((cb) => cb.value);
-    });
-
-    // Coleta inputs de texto e data
-    const textInputs = section.querySelectorAll(
-      'input[type="text"]:not([id$="-observacoes"])'
-    );
-    textInputs.forEach((input) => {
-      if (input.value) {
-        sectionData[input.name] = input.value;
-      }
-    });
-
-    const dateInputs = section.querySelectorAll('input[type="date"]');
-    dateInputs.forEach((input) => {
-      if (input.value) {
-        sectionData[input.name] = input.value;
-      }
-    });
-
-    // Coleta observações
-    const observacoesTextarea = section.querySelector(
-      'textarea[id*="-observacoes"]'
-    );
-    if (observacoesTextarea) {
-      sectionData.observacoes = observacoesTextarea.value;
-    }
-
-    return sectionData;
-  }
-
-  // Coleta dados de todos os fieldsets
-  formData.fieldsets = {};
-  const fieldsets = document.querySelectorAll("fieldset");
-  fieldsets.forEach((fieldset, index) => {
-    if (!fieldset.classList.contains("hidden")) {
-      formData.fieldsets[fieldset.id || `fieldset-${index}`] =
-        collectFieldsetData(fieldset);
-    }
-  });
-
-  // Converte para JSON
-  const jsonData = JSON.stringify(formData, null, 2);
-
-  // Cria um blob e um link para download
-  const blob = new Blob([jsonData], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `checklist-pdde-${formData.processo || "dados"}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// Função para carregar os dados do formulário
-function loadFormData() {
-  // Cria um input de arquivo invisível
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = ".json";
-  fileInput.style.display = "none";
-  document.body.appendChild(fileInput);
-
-  // Quando um arquivo for selecionado
-  fileInput.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      try {
-        const formData = JSON.parse(e.target.result);
-
-        // Preenche informações gerais
-        if (formData.unidadeEscolar)
-          document.getElementById("unidade-escolar").value =
-            formData.unidadeEscolar;
-        if (formData.programa) {
-          document.getElementById("programa").value = formData.programa;
-          // Dispara o evento change para mostrar as ações correspondentes
-          document
-            .getElementById("programa")
-            .dispatchEvent(new Event("change"));
-        }
-        if (formData.processo)
-          document.getElementById("processo").value = formData.processo;
-        if (formData.exercicio)
-          document.getElementById("exercicio").value = formData.exercicio;
-
-        // Marca as ações selecionadas
-        if (formData.acoes && formData.acoes.length > 0) {
-          document.querySelectorAll('input[name="acoes[]"]').forEach((cb) => {
-            cb.checked = formData.acoes.includes(cb.value);
-          });
-        }
-
-        // Função para preencher um fieldset com dados
-        function fillFieldsetData(fieldset, fieldsetData) {
-          // Preenche cabeçalho (se existir)
-          if (fieldsetData.header) {
-            const headerInput = fieldset.querySelector(
-              '.form-group.box-type input[type="text"]'
-            );
-            if (headerInput) headerInput.value = fieldsetData.header;
-          }
-
-          // Marca radios
-          for (const [name, value] of Object.entries(fieldsetData)) {
-            if (
-              name !== "header" &&
-              name !== "observacoes" &&
-              name !== "subsections" &&
-              !Array.isArray(value)
-            ) {
-              const radio = fieldset.querySelector(
-                `input[name="${name}"][value="${value}"]`
-              );
-              if (radio) {
-                radio.checked = true;
-                // Dispara o evento change para mostrar/ocultar detalhes
-                radio.dispatchEvent(new Event("change"));
-              }
-            }
-          }
-
-          // Marca checkboxes
-          for (const [groupName, values] of Object.entries(fieldsetData)) {
-            if (Array.isArray(values)) {
-              const group = fieldset.querySelector(`#${groupName}`);
-              if (group) {
-                values.forEach((value) => {
-                  const checkbox = group.querySelector(
-                    `input[value="${value}"]`
-                  );
-                  if (checkbox) checkbox.checked = true;
-                });
-              }
-            }
-          }
-
-          // Preenche inputs de texto e data
-          for (const [name, value] of Object.entries(fieldsetData)) {
-            if (
-              name !== "header" &&
-              name !== "observacoes" &&
-              name !== "subsections" &&
-              !Array.isArray(value)
-            ) {
-              const input = fieldset.querySelector(
-                `input[name="${name}"]:not([type="radio"])`
-              );
-              if (input) input.value = value;
-            }
-          }
-
-          // Preenche observações
-          if (fieldsetData.observacoes) {
-            const observacoesTextarea = fieldset.querySelector(
-              'textarea[id*="-observacoes"]'
-            );
-            if (observacoesTextarea)
-              observacoesTextarea.value = fieldsetData.observacoes;
-          }
-
-          // Preenche subseções
-          if (fieldsetData.subsections) {
-            for (const [sectionId, sectionData] of Object.entries(
-              fieldsetData.subsections
-            )) {
-              const section = fieldset.querySelector(`#${sectionId}`);
-              if (section) {
-                fillSubsectionData(section, sectionData);
-              }
-            }
-          }
-        }
-
-        // Função para preencher uma subseção com dados
-        function fillSubsectionData(section, sectionData) {
-          // Marca radios
-          for (const [name, value] of Object.entries(sectionData)) {
-            if (name !== "observacoes" && !Array.isArray(value)) {
-              const radio = section.querySelector(
-                `input[name="${name}"][value="${value}"]`
-              );
-              if (radio) {
-                radio.checked = true;
-                // Dispara o evento change para mostrar/ocultar detalhes
-                radio.dispatchEvent(new Event("change"));
-              }
-            }
-          }
-
-          // Marca checkboxes
-          for (const [groupName, values] of Object.entries(sectionData)) {
-            if (Array.isArray(values)) {
-              const group = section.querySelector(`#${groupName}`);
-              if (group) {
-                values.forEach((value) => {
-                  const checkbox = group.querySelector(
-                    `input[value="${value}"]`
-                  );
-                  if (checkbox) checkbox.checked = true;
-                });
-              }
-            }
-          }
-
-          // Preenche inputs de texto e data
-          for (const [name, value] of Object.entries(sectionData)) {
-            if (name !== "observacoes" && !Array.isArray(value)) {
-              const input = section.querySelector(
-                `input[name="${name}"]:not([type="radio"])`
-              );
-              if (input) input.value = value;
-            }
-          }
-
-          // Preenche observações
-          if (sectionData.observacoes) {
-            const observacoesTextarea = section.querySelector(
-              'textarea[id*="-observacoes"]'
-            );
-            if (observacoesTextarea)
-              observacoesTextarea.value = sectionData.observacoes;
-          }
-        }
-
-        // Preenche todos os fieldsets existentes
-        if (formData.fieldsets) {
-          for (const [fieldsetId, fieldsetData] of Object.entries(
-            formData.fieldsets
-          )) {
-            const fieldset = document.getElementById(fieldsetId);
-            if (fieldset) {
-              fillFieldsetData(fieldset, fieldsetData);
-            }
-          }
-        }
-
-        // Recria templates clonados que não existem mais
-        if (formData.fieldsets) {
-          // Identifica templates que precisam ser clonados
-          const templateTypes = {
-            "ata-prioridades": {
-              buttonId: "add-ata-prioridades",
-              count: 0,
-            },
-            "plano-acao": {
-              buttonId: "add-plano-acao",
-              count: 0,
-            },
-            cc: {
-              buttonId: "add-cc",
-              count: 0,
-            },
-            ci: {
-              buttonId: "add-ci",
-              count: 0,
-            },
-            "dev-escola": {
-              buttonId: "add-dev-escola",
-              count: 0,
-            },
-            "docs-compras": {
-              buttonId: "add-docs-compras",
-              count: 0,
-            },
-            qd: {
-              buttonId: "add-qd",
-              count: 0,
-            },
-          };
-
-          // Conta templates existentes
-          for (const type in templateTypes) {
-            const existingTemplates = document.querySelectorAll(
-              `fieldset[id^="${type}-section-"]`
-            );
-            templateTypes[type].count = existingTemplates.length;
-          }
-
-          // Conta templates no arquivo
-          for (const fieldsetId in formData.fieldsets) {
-            for (const type in templateTypes) {
-              if (fieldsetId.includes(`${type}-section-`)) {
-                const match = fieldsetId.match(/-(\d+)$/);
-                if (match) {
-                  const index = parseInt(match[1]);
-                  if (index > templateTypes[type].count) {
-                    templateTypes[type].count = index;
-                  }
-                }
-              }
-            }
-          }
-
-          // Clona templates adicionais
-          for (const type in templateTypes) {
-            const button = document.getElementById(
-              templateTypes[type].buttonId
-            );
-            if (button) {
-              const existingCount = document.querySelectorAll(
-                `fieldset[id^="${type}-section-"]`
-              ).length;
-              const neededCount = templateTypes[type].count;
-
-              // Clica no botão para adicionar templates
-              for (let i = existingCount; i < neededCount; i++) {
-                button.click();
-              }
-            }
-          }
-
-          // Preenche os templates recém-clonados
-          setTimeout(() => {
-            for (const [fieldsetId, fieldsetData] of Object.entries(
-              formData.fieldsets
-            )) {
-              const fieldset = document.getElementById(fieldsetId);
-              if (fieldset) {
-                fillFieldsetData(fieldset, fieldsetData);
-              }
-            }
-          }, 500);
-        }
-
-        alert("Dados carregados com sucesso!");
-      } catch (error) {
-        console.error("Erro ao carregar o arquivo:", error);
-        alert(
-          "Erro ao carregar o arquivo. Verifique se é um arquivo JSON válido."
-        );
-      }
+    const formData = {
+        fieldsets: []
     };
-    reader.readAsText(file);
-  });
 
-  // Clica no input de arquivo para abrir o seletor
-  fileInput.click();
+    // ... (coleta de informações gerais não muda) ...
+    formData.unidadeEscolar = document.getElementById("unidade-escolar").value || "";
+    formData.programa = document.getElementById("programa").value || "";
+    formData.processo = document.getElementById("processo").value || "";
+    formData.exercicio = document.getElementById("exercicio").value || "";
+    formData.acoes = Array.from(
+        document.querySelectorAll('input[name="acoes[]"]:checked')
+    ).map(cb => cb.value);
 
-  // Remove o input após o uso
-  setTimeout(() => {
-    document.body.removeChild(fileInput);
-  }, 5000);
+    const templateTypeMap = {
+        "ata-prioridades-section": "ata-prioridades", "plano-acao-section": "plano-acao",
+        "cc-section": "cc", "ci-section": "ci", "dev-escola-section": "dev-escola",
+        "docs-compras-section": "docs-compras", "qd-section": "qd",
+    };
+
+    function collectElementData(element) {
+        const data = { rows: {}, subsections: {} };
+        const headerInput = element.querySelector(':scope > .dynamic-container > .form-group.box-type input');
+        if (headerInput) data.header = headerInput.value;
+
+        element.querySelectorAll(':scope .checklist-row').forEach(row => {
+            const itemCell = row.querySelector('.checklist-item');
+            if (!itemCell) return;
+            const itemName = itemCell.textContent.trim();
+            const rowData = {};
+            const checkedRadio = row.querySelector('input[type="radio"]:checked');
+            if (checkedRadio) rowData.status = checkedRadio.value;
+            const details = {};
+            row.querySelectorAll('.details-container input, .details-container textarea, .text-group input, .text-pendencia textarea, .checkbox-group input, .group-date input').forEach(detailInput => {
+                const detailName = detailInput.name;
+                if (!detailName) return;
+                if (detailInput.type === 'checkbox') {
+                    if (detailInput.checked) {
+                        if (!details[detailName]) details[detailName] = [];
+                        details[detailName].push(detailInput.value);
+                    }
+                } else if (detailInput.value) {
+                    details[detailName] = detailInput.value;
+                }
+            });
+            if (Object.keys(details).length > 0) rowData.details = details;
+            data.rows[itemName] = rowData;
+        });
+
+        const obsTextarea = element.querySelector(':scope > .dynamic-container > .observacoes-container textarea');
+        if (obsTextarea && obsTextarea.value) data.observacoes = obsTextarea.value;
+
+        const subsections = element.querySelectorAll(":scope > section");
+        if (subsections.length > 0) {
+            subsections.forEach(sub => {
+                const originalId = sub.id.replace(/-\d+$/, '');
+                data.subsections[originalId] = collectElementData(sub);
+            });
+        }
+        return data;
+    }
+
+    document.querySelectorAll("fieldset:not(.hidden)").forEach(fieldset => {
+        const fieldsetId = fieldset.id;
+        
+        // **CORREÇÃO PRINCIPAL: Ignora o fieldset se ele não tiver um ID.**
+        if (!fieldsetId) {
+            return; // Pula para a próxima iteração
+        }
+
+        let templateType = null;
+        for (const key in templateTypeMap) {
+            if (fieldsetId.startsWith(key)) {
+                templateType = templateTypeMap[key];
+                break;
+            }
+        }
+        formData.fieldsets.push({
+            id: fieldsetId,
+            templateType: templateType,
+            data: collectElementData(fieldset),
+        });
+    });
+
+    const jsonData = JSON.stringify(formData, null, 2);
+    const blob = new Blob([jsonData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `checklist-pdde-${formData.processo || "dados"}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    a.remove();
 }
 
+// Função para carregar os dados do formulário (VERSÃO FINAL E ROBUSTA)
+function loadFormData() {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".json";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    fileInput.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const formData = JSON.parse(e.target.result);
+
+                document.querySelectorAll('[id$="-receptacle"]').forEach(r => { r.innerHTML = ''; });
+                uniqueIdCounter = 0;
+
+                // ... (preenchimento de informações gerais não muda) ...
+                document.getElementById("unidade-escolar").value = formData.unidadeEscolar || "";
+                document.getElementById("processo").value = formData.processo || "";
+                document.getElementById("exercicio").value = formData.exercicio || "";
+                const programaSelect = document.getElementById("programa");
+                programaSelect.value = formData.programa || "";
+                programaSelect.dispatchEvent(new Event("change"));
+                if (formData.acoes) {
+                    formData.acoes.forEach(v => {
+                        const cb = document.querySelector(`input[name="acoes[]"][value="${v}"]`);
+                        if (cb) cb.checked = true;
+                    });
+                }
+
+                const buttonMap = {
+                    "ata-prioridades": "add-ata-prioridades", "plano-acao": "add-plano-acao",
+                    "cc": "add-cc", "ci": "add-ci", "dev-escola": "add-dev-escola",
+                    "docs-compras": "add-docs-compras", "qd": "add-qd",
+                };
+
+                function fillElementData(element, data) {
+                    // ... (esta função interna está correta e não precisa de mudanças) ...
+                    if (!element || !data) return;
+                    if (data.header) {
+                        const headerInput = element.querySelector(':scope > .dynamic-container > .form-group.box-type input');
+                        if (headerInput) headerInput.value = data.header;
+                    }
+                    if (data.rows) {
+                        for (const [itemName, rowData] of Object.entries(data.rows)) {
+                            const row = Array.from(element.querySelectorAll(':scope .checklist-row')).find(r => r.querySelector('.checklist-item')?.textContent.trim() === itemName);
+                            if (!row) continue;
+                            if (rowData.details) {
+                                const detailsContainer = row.querySelector('.details-container, .text-group, .text-pendencia, .checkbox-group, .group-date');
+                                if (detailsContainer) {
+                                    for (const [detailName, detailValue] of Object.entries(rowData.details)) {
+                                        const detailElements = detailsContainer.querySelectorAll(`:scope [name="${detailName}"]`);
+                                        if (detailElements.length === 0) continue;
+                                        if (Array.isArray(detailValue)) {
+                                            detailElements.forEach(checkbox => {
+                                                if (detailValue.includes(checkbox.value)) checkbox.checked = true;
+                                            });
+                                        } else {
+                                            detailElements[0].value = detailValue;
+                                        }
+                                    }
+                                }
+                            }
+                            if (rowData.status) {
+                                const radio = row.querySelector(`input[type="radio"][value="${rowData.status}"]`);
+                                if (radio) {
+                                    radio.checked = true;
+                                    radio.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                            }
+                        }
+                    }
+                    if (data.observacoes) {
+                        const obsTextarea = element.querySelector(':scope > .dynamic-container > .observacoes-container textarea');
+                        if (obsTextarea) obsTextarea.value = data.observacoes;
+                    }
+                    if (data.subsections) {
+                        for (const [originalId, subsectionData] of Object.entries(data.subsections)) {
+                            const subsection = element.querySelector(`:scope [id^="${originalId}"]`);
+                            if (subsection) fillElementData(subsection, subsectionData);
+                        }
+                    }
+                }
+
+                if (formData.fieldsets) {
+                    formData.fieldsets.forEach(fsData => {
+                        // **CORREÇÃO PRINCIPAL: Pula o objeto se o ID for vazio.**
+                        if (!fsData.id) {
+                            return; // Pula para a próxima iteração
+                        }
+
+                        let currentFieldset;
+                        if (fsData.templateType) {
+                            const button = document.getElementById(buttonMap[fsData.templateType]);
+                            if (button) {
+                                button.click();
+                                const expectedId = `${fsData.templateType}-section-${uniqueIdCounter}`;
+                                currentFieldset = document.getElementById(expectedId);
+                            }
+                        } else {
+                            currentFieldset = document.getElementById(fsData.id);
+                        }
+                        if (currentFieldset) {
+                            fillElementData(currentFieldset, fsData.data);
+                        }
+                    });
+                }
+                alert("Dados carregados com sucesso!");
+            } catch (error) {
+                console.error("Erro ao processar o arquivo JSON:", error);
+                alert("Erro ao carregar o arquivo. Verifique o console para mais detalhes.");
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    fileInput.click();
+    setTimeout(() => fileInput.remove(), 5000);
+}
