@@ -902,6 +902,7 @@ function printPendenciasReport() {
       "Prazo de entrega": "Prazo de entrega ausente",
       "Datado antes/igual da NF e depois/igual dos orçamentos":
         "Data incorreta em relação à NF ou orçamentos",
+      "Nome do Vendedor": "Nome do Vendedor ausente",
       "Assinatura das partes": "Assinatura das partes ausente",
       "Processo relacionado": "Processo não relacionado (via SEI)",
       "Campos preenchidos adequadamente": "Campos preenchidos inadequadamente",
