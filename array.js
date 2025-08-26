@@ -858,6 +858,15 @@ const orcamentoUmData = [
     class: "checklist-item",
     hasDetails: false,
   },
+  {
+    item: "Nome do Vendedor",
+    name: "orcamento-um-vendedor",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
 ];
 
 //Array Orçamento 2
@@ -940,6 +949,15 @@ const orcamentoDoisData = [
     class: "checklist-item",
     hasDetails: false,
   },
+  {
+    item: "Nome do Vendedor",
+    name: "orcamento-dois-vendedor",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
 ];
 
 //Array Orçamento 3
@@ -1016,6 +1034,15 @@ const orcamentoTresData = [
   {
     item: "Prazo de entrega",
     name: "orcamento-tres-prazo-entrega",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
+  {
+    item: "Nome do Vendedor",
+    name: "orcamento-tres-vendedor",
     valueAprovado: "correto",
     valuePendencia: "incorreto",
     type: "radio",
