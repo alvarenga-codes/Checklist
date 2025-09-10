@@ -918,14 +918,14 @@ function printPendenciasReport() {
       "Referendo: membros eleitos": "Referendo: membros não eleitos",
       "Referendo: assinaturas":
         "Referendo: assinaturas ausente(s) ou difere(m) com a ata de eleição",
-      "Ano adequado": "Ano inadequado",
+      "Ano adequado": "Ano incorreto",
       "Data igual/posterior ao Parecer do Conselho Fiscal":
         "Data anterior ao Parecer do Conselho Fiscal",
       "Contagem de votos": "Contagem de votos incorreta ou ausente",
       "Lista de presentes: representatividade":
-        "Lista de presentes: sem representatividade",
+        "Lista de presentes: sem/pouca representatividade",
       "Lista de presente: ausência de assinatura de membros":
-        "Lista de presente: ausência de assinatura de membros",
+        "Lista de presente: membros que participaram do planejamento, execução e aprovação não podem ser contabilizados nos votos",
       "Mandato contempla execução": "Mandato não contempla execução",
       "Registro em cartório": "Registro em cartório ausente",
     };
