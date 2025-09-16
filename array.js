@@ -74,6 +74,7 @@ const acoesConfig = [
         label: "Programa Escola das Adolescências",
       },
       { value: "escola-comunidade", label: "Programa Escola e Comunidade" },
+      { value: "mais-alfabetização", label: "Programa Mais Alfabetização" },
     ],
   },
 ];
