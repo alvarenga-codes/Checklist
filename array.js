@@ -118,7 +118,7 @@ const escolas = [
   { value: "ec-basevi", nome: "EC BASEVI" },
   { value: "ec-boa-vista", nome: "EC BOA VISTA" },
   { value: "ec-catingueiro", nome: "EC CATINGUEIRO" },
-  { value: "ec-brochado-da-rocha", nome: "C BROCHADO DA ROCHA" },
+  { value: "ec-brochado-da-rocha", nome: "EC BROCHADO DA ROCHA" },
   { value: "ec-santa-helena", nome: "EC SANTA HELENA" },
   { value: "ec-corrego-do-arrozal", nome: "EC CÓRREGO DO ARROZAL" },
   { value: "ec-corrego-do-ouro", nome: "EC CÓRREGO DO OURO" },
