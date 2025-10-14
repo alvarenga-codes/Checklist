@@ -822,6 +822,15 @@ const orcamentoUmData = [
     class: "checklist-item",
     hasDetails: false,
   },
+    {
+    item: "Orçamento dentro da validade",
+    name: "orcamento-um-dentro-validade",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
   {
     item: "Itens em conformidade com a NF",
     name: "orcamento-um-itens-conformidade-nf",
@@ -913,6 +922,16 @@ const orcamentoDoisData = [
     class: "checklist-item",
     hasDetails: false,
   },
+      {
+    item: "Orçamento dentro da validade",
+    name: "orcamento-dois-dentro-validade",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
+
   {
     item: "Itens em conformidade com a NF",
     name: "orcamento-dois-itens-conformidade-nf",
@@ -1004,6 +1023,16 @@ const orcamentoTresData = [
     class: "checklist-item",
     hasDetails: false,
   },
+      {
+    item: "Orçamento dentro da validade",
+    name: "orcamento-tres-dentro-validade",
+    valueAprovado: "correto",
+    valuePendencia: "incorreto",
+    type: "radio",
+    class: "checklist-item",
+    hasDetails: false,
+  },
+
   {
     item: "Itens em conformidade com a NF",
     name: "orcamento-tres-itens-conformidade-nf",
