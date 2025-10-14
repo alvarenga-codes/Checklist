@@ -894,6 +894,7 @@ function printPendenciasReport() {
       "Carimbo de identificação do programa":
         "Carimbo de identificação do programa",
       "Carimbo de atesto": "Carimbo de atesto",
+      "Comprovante de pagamento": "Comprovante de pagamento ausente",
       "Dados da empresa": "Dados da empresa incorretos ou ausentes",
       "Data anterior/igual à NF": "Data posterior à NF",
       "Itens em conformidade com a NF": "Itens não conformes com a NF",
