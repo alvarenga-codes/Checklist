@@ -774,7 +774,10 @@ const notaFiscalData = [
         value: "problema-matricula-assinatura",
         label: "Problema na matricula/assinatura",
       },
-        {
+    ],
+    dataTarget: "nf-atesto",
+  },
+  {
     item: "Comprovante de pagamento",
     name: "comprovante-pagamento",
     valueAprovado: "correto",
@@ -782,9 +785,6 @@ const notaFiscalData = [
     type: "radio",
     class: "checklist-item",
     hasDetails: false,
-  },
-    ],
-    dataTarget: "nf-atesto",
   },
 ];
 
