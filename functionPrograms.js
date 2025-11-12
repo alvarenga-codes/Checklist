@@ -4,7 +4,7 @@ function carregarEscolas() {
   // 1.1 Encontra o elemento select no DOM
   const campoEscolas = document.getElementById("unidade-escolar");
 
-  // 1.2 Percorre cada escola do array
+  // 1.2 Percorre cada escola do array do array.js
   escolas.forEach((escola) => {
     // 1.3 Cria um novo elemento <option>
     const opcao = document.createElement("option");
@@ -61,18 +61,28 @@ function renderizarAcoes() {
   });
 }
 
-// 3.2 Controle da visibilidade dos itens
+//INSERIR DATA ATUAL INICIALMENTE
+const anoAtual = new Date().getFullYear();
+// Seleciona o input
+const inputAno = document.getElementById("exercicio");
+// Define o valor inicial como o ano atual
+inputAno.value = anoAtual;
+// Define limites, se quiser, como um range de anos válidos
+inputAno.min = 2000;
+inputAno.max = anoAtual + 10;
+
+// 4 Controle da visibilidade dos itens
 document
   .getElementById("programa")
   .addEventListener("change", function (event) {
     const selectedProgram = event.target.value;
 
-    //3.2.1 Ocultar todos os grupos de ações
+    //4.1 Ocultar todos os grupos de ações
     document.querySelectorAll(".form-group-item").forEach((item) => {
       item.classList.add("hidden");
     });
 
-    // 3.2.2 Mostrar o grupo de ações correspondente ao programa selecionado
+    // 4.2 Mostrar o grupo de ações correspondente ao programa selecionado
     if (selectedProgram) {
       const actionsGroup = document.getElementById(`acoes-${selectedProgram}`);
       if (actionsGroup) {
@@ -307,7 +317,7 @@ function renderTable(data, prefix, tableBody, dynamicContainerId, fieldset) {
   addObservacoes(prefix, dynamicContainerId);
 }
 
-// Função de renderização da tabela para seções internas
+// Função de renderização da tabela para seções internas (Docs de compra e QD)
 function renderTableSection(
   data,
   prefix,
@@ -819,6 +829,7 @@ function printPendenciasReport() {
                     padding: 10px;
                     background-color: #f0f0f0;
                     border-left: 3px solid #ccc;
+                    line-height: 1.3;
                 }
                 .pendencia {
                     color: #333;
@@ -832,13 +843,60 @@ function printPendenciasReport() {
                     padding-top: 10px;
                 }
                 @media print {
-                    body {
-                        font-size: 12pt;
-                    }
-                    .section, .subsection {
-                        page-break-inside: avoid;
-                    }
+                  html, body {
+                    height: auto !important;
+                    overflow: visible !important;
+                    background: #fff !important;
+                    font-size: 12pt;
+                  }
+
+                  /* Containers principais */
+                  section, fieldset, .checklist-grid, .observacoes, .item-relatorio {
+                    display: block !important;
+                    overflow: visible !important;
+                    page-break-inside: auto !important;   /* permite dividir o bloco */
+                    break-inside: auto !important;
+                    page-break-before: auto !important;
+                    page-break-after: auto !important;
+                    border: 1px solid #ddd;
+                    box-shadow: none !important;
+                    margin-bottom: 8mm !important;
+                  }
+
+                  /* Qualquer container interno (garante que o navegador possa quebrar dentro) */
+                  div, article, aside {
+                    display: block !important;
+                    overflow: visible !important;
+                    page-break-inside: auto !important;
+                    break-inside: auto !important;
+                  }
+
+                  /* Evita corte de textos e listas no meio */
+                  p, li {
+                    break-inside: auto !important;
+                    page-break-inside: auto !important;
+                    widows: 2;
+                    orphans: 2;
+                  }
+
+                  /* Remove comportamento de layout flex/grid na impressão */
+                  [class*="grid"], [class*="row"], [class*="col"], .container {
+                    display: block !important;
+                    width: 100% !important;
+                  }
+
+                  /* Margens e tamanho da página */
+                  @page {
+                    size: A4 portrait;
+                    margin: 15mm;
+                  }
+
+                  /* Oculta botões e elementos de tela */
+                  .add-button, .remove-button, .print-button, .save-button, .load-button {
+                    display: none !important;
+                  }
                 }
+
             </style>
         </head>
         <body>
@@ -862,23 +920,23 @@ function printPendenciasReport() {
       Texto: "Texto incorreto",
       "Assinatura da autoridade competente":
         "Assinado por autoridade não competente",
-      "Data anterior a 1ª compra": "Data posterior a 1ª compra",
+      "Data anterior a 1ª compra": "Data posterior à 1ª compra",
       "Saldo reprogramado": "Saldo reprogramado incorreto",
       "Repasse FNDE": "Repasse FNDE incorreto",
-      "Custeio: itens contemplam as compras":
-        "Despesa de custeio não contemplada na ata",
-      "Capital: itens contemplam as compras":
-        "Despesa de capital não contemplada na ata",
-      "Membros eleitos": "Membros não eleitos pela ata de eleição inserida",
+      "Custeio: despesas previstas na ata":
+        "Despesa de custeio não prevista na ata de prioridades",
+      "Capital: despesas previstas na ata":
+        "Despesa de capital não prevista na ata de prioridades",
+      "Membros eleitos": "Membros não eleitos conforme ata de eleição inserida",
       "Assinatura dos membros":
-        "Assinatura ausente ou difere com a ata de eleição",
+        "Assinatura ausente ou divergente da ata de eleição",
       "Ação adequada": "Ação inadequada",
       "Detalhamento dos itens": "Detalhamento dos itens ausente ou incorreto",
       "Todos os meses presentes": "Extrato(s) ausente(s)",
       "Mês: atualizado até último dia útil":
-        "Extrato(s) incompleto(s) ou não atualizado(s) até último dia útil",
+        "Extrato(s) incompleto(s) ou não atualizado(s) até o último dia útil",
       "Valores recebidos aplicados no prazo":
-        "Valores recebidos não aplicados no prazo",
+        "Valores não aplicados na Conta Investimento",
       "Despesas com documentação comprobatória":
         "Despesas sem documentação comprobatória",
       "Despesas autorizadas, conforme Resolução FNDE": "Despesas não aprovadas",
@@ -887,8 +945,9 @@ function printPendenciasReport() {
         "Cálculos de correção monetária ausentes",
       Justificativa: "Justificativa ausente",
       "GRU (FNDE)": "GRU (FNDE) ausente",
+      "Extrato atual conta zerada": "Ausência de extrato bancário atualizado demonstrando conta com saldo zerado",
       "Docs de compra (NF, orçamentos, comprovantes...)":
-        "Despesa realizada sem documentos comprobatórios (NF, mín 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço)",
+        "Despesa realizada sem documentação comprobatória (Nota  Fiscal, mínimo de 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço)",
       "Razão social e CNPJ da UEx": "Razão social e/ou CNPJ da UEx incorretos",
       "Carimbo de recebido": "Carimbo de recebido",
       "Carimbo de identificação do programa":
@@ -897,24 +956,25 @@ function printPendenciasReport() {
       "Comprovante de pagamento": "Comprovante de pagamento ausente",
       "Dados da empresa": "Dados da empresa incorretos ou ausentes",
       "Data anterior/igual à NF": "Data posterior à NF",
-      "Itens em conformidade com a NF": "Itens não conformes com a NF",
+      "Itens em conformidade com a NF": "Itens não conformes com a Nota Fiscal",
       "Validade da proposta": "Validade da proposta",
       "Forma de pagamento": "Forma de pagamento ausente",
       "Prazo de entrega": "Prazo de entrega ausente",
       "Datado antes/igual da NF e depois/igual dos orçamentos":
-        "Data incorreta em relação à NF ou orçamentos",
+        "Data incorreta em relação à Nota Fiscal ou orçamentos",
       "Orçamento dentro da validade": "Orçamento vencido",
-      "Nome do Vendedor": "Nome do Vendedor ausente",
-      "Assinatura das partes": "Assinatura das partes ausente",
+      "Nome do Vendedor": "Nome do vendedor ausente",
+      "Assinatura das partes": "Ausência de assinatura(s) da(s) parte(s) envolvida(s)",
+      "Itens, conforme NF": "Itens não correspondem integralmente aos descritos na Nota Fiscal",
       "Processo relacionado": "Processo não relacionado (via SEI)",
       "Campos preenchidos adequadamente": "Campos preenchidos inadequadamente",
       "Identificação do programa": "Identificação do programa incorreta",
       "Reprogramação (parcial ou total)":
         "Reprogramação (parcial ou total) incorreta",
-      "Data posterior a última compra": "Data anterior a última compra",
+      "Data posterior a última compra": "Data anterior à última compra",
       "Conselho fiscal: mínimo 03 conselheiros":
-        "Conselheiros fiscais: não possui mínimo de 03 assinaturas",
-      "Conselho fiscal: eleitos na ata": "Conselheiros fiscais: não eleitos",
+        "Conselheiros fiscais: menos de 03 assinaturas",
+      "Conselho fiscal: eleitos na ata": "Conselheiros fiscais não eleitos conforme a ata",
       "Conselho fiscal: assinaturas":
         "Conselho fiscal: assinaturas ausente(s) ou difere(m) com a ata de eleição",
       "Referendo: membros eleitos": "Referendo: membros não eleitos",
@@ -925,10 +985,10 @@ function printPendenciasReport() {
         "Data anterior ao Parecer do Conselho Fiscal",
       "Contagem de votos": "Contagem de votos incorreta ou ausente",
       "Lista de presentes: representatividade":
-        "Lista de presentes: sem/pouca representatividade",
-      "Lista de presente: ausência de assinatura de membros":
-        "Lista de presente: membros que participaram do planejamento, execução e aprovação não podem ser contabilizados nos votos",
-      "Mandato contempla execução": "Mandato não contempla execução",
+        "Lista de presença sem representatividade suficiente",
+      "Lista de presentes: ausência de assinatura de membros":
+        "Membros que participaram do planejamento, execução e aprovação não podem ser contabilizados nos votos",
+      "Mandato contempla execução": "Mandato não abrange todo o período de execução dos recursos",
       "Registro em cartório": "Registro em cartório ausente",
     };
 
@@ -986,7 +1046,7 @@ function printPendenciasReport() {
     if (legend.textContent == "Extrato bancário: conta corrente") {
       const input = headerDiv.querySelector('input[type="text"]');
       if (input && input.value) {
-        return "Conta nº: " + input.value.trim() + " - Conta corrente";
+        return "Conta Corrente nº: " + input.value.trim();
       } else {
         return "Conta Corrente";
       }
@@ -995,16 +1055,16 @@ function printPendenciasReport() {
     if (legend.textContent == "Extrato bancário: conta investimento") {
       const input = headerDiv.querySelector('input[type="text"]');
       if (input && input.value) {
-        return "Conta nº: " + input.value.trim() + " - Conta investimento";
+        return "Conta Investimento nº: " + input.value.trim();
       } else {
         return "Conta Investimento";
       }
     }
     //Tratamento para Comprovantes de compra
     if (legend.textContent == "Comprovantes de compra") {
-      const input = headerDiv.querySelector('input[type="number"]');
+      const input = headerDiv.querySelector('input[type="text"]');
       if (input && input.value) {
-        return "Compra: " + input.value.trim();
+        return input.value.trim();
       } else {
         return "Comprovantes de compra";
       }
@@ -1026,16 +1086,6 @@ function printPendenciasReport() {
     //Tratamento para Devolução FNDE
     if (legend.textContent == "Devolução de valores ao FNDE") {
       return "Devolução de valores ao FNDE";
-    }
-
-    //Tratamento para Comprovante de compra
-    if (legend.textContent == "Comprovantes de compra") {
-      const input = headerDiv.querySelector('input[type="number"]');
-      if (input && input.value) {
-        return "Compra nº: " + input.value.trim();
-      } else {
-        return "Comprovantes de compra";
-      }
     }
 
     //Tratamento para Quadro Demonstrativo
@@ -1242,11 +1292,13 @@ function printPendenciasReport() {
           const textareas = detailsContainer.querySelectorAll("textarea");
           textareas.forEach((textarea) => {
             if (textarea.value) {
-              item.details.push(
-                `${textarea.previousElementSibling?.textContent || ""}${
-                  textarea.value
-                }`
-              );
+              if (textarea.previousElementSibling?.textContent) {
+                item.details.push(
+                  `${textarea.previousElementSibling?.textContent}: ${textarea.value}`
+                );
+              } else {
+                item.details.push(`${textarea.value}`);
+              }
             }
           });
         }
@@ -1351,7 +1403,6 @@ function printPendenciasReport() {
             const textareas = detailsContainer.querySelectorAll("textarea");
             textareas.forEach((textarea) => {
               if (textarea.value) {
-                console.log(textarea.value);
                 item.details.push(
                   `${
                     textarea.previousElementSibling?.textContent || "Observação"
@@ -1452,9 +1503,15 @@ function printPendenciasReport() {
 
             // Coleta detalhes de textarea
             const textareas = detailsContainer.querySelectorAll("textarea");
+
             textareas.forEach((textarea) => {
+              const label = detailsContainer.querySelector(
+                `label[for="${textarea.id}"]`
+              );
+              const labelText = label ? label.textContent.trim() : "";
+
               if (textarea.value) {
-                item.details.push(`${textarea.value}`);
+                item.details.push(`${labelText}: ${textarea.value}`);
               }
             });
           }
@@ -1560,15 +1617,40 @@ function printPendenciasReport() {
     });
 
     // Adiciona as observações gerais da seção
-    if (section.observacoes) {
-      reportHTML += `
-                <div class="observacoes">
-                    <strong>Observações:</strong>
-                    <div>${escapeHtmlWithBreaks(section.observacoes)}</div>
-                </div>
-            `;
-    }
+    const itensNaoAprovados = encontrarItemDespesasNaoAprovadas(section);
+    const textosPadrao = {
+      "Despesas não aprovadas": window.observacoesGerais[0].naoAprovado,
+      "Despesas sem documentação comprobatória":
+        window.observacoesGerais[1].despesaSemComprovacao,
+      "Valores não aplicados na Conta Investimento":
+        window.observacoesGerais[2].naoAplicadoPrazo,
+    };
+    if (section.observacoes || itensNaoAprovados.length > 0) {
+      let textos = [];
 
+      // Adiciona os textos padrão conforme os itens encontrados
+      itensNaoAprovados.forEach((item) => {
+        const titulo = item?.title?.trim();
+        const textoPadrao = textosPadrao[titulo];
+        if (textoPadrao) {
+          textos.push(textoPadrao);
+        }
+      });
+
+      // Se houver observações manuais, acrescenta também
+      if (section.observacoes) {
+        textos.push(escapeHtmlWithBreaks(section.observacoes));
+      }
+      const textoFinal = textos.join("<br><br>");
+
+      // Gera o bloco de HTML final
+      reportHTML += `
+    <div class="observacoes">
+      <strong>Observações:</strong>
+      <div>${textoFinal}</div>
+    </div>
+  `;
+    }
     reportHTML += `</div>`;
   });
 
@@ -1591,225 +1673,294 @@ function printPendenciasReport() {
   };
 }
 
-//EM DESENVOLVIMENTO
+
+//Função para colocar o texto padrão caso ocorra despesas não aprovadas
+function encontrarItemDespesasNaoAprovadas(section) {
+  if (!section || !section.items) return null;
+
+  const items = Array.isArray(section.items) ? section.items : [section.items]; // garante que será sempre array
+
+  //Array dos titulos procurados
+  const titulosValidos = [
+    "Despesas não aprovadas",
+    "Despesas sem documentação comprobatória",
+    "Valores não aplicados na Conta Investimento",
+  ];
+
+  // procura o item pelo título "Despesas não aprovadas"
+  const encontrados = items.filter((item) =>
+    titulosValidos.includes(item?.title?.trim())
+  );
+
+  return encontrados;
+}
 
 // Função para salvar os dados do formulário (IGNORA FIELDSETS SEM ID)
 function saveFormData() {
-    const formData = {
-        fieldsets: []
-    };
+  const formData = {
+    fieldsets: [],
+  };
 
-    // ... (coleta de informações gerais não muda) ...
-    formData.unidadeEscolar = document.getElementById("unidade-escolar").value || "";
-    formData.programa = document.getElementById("programa").value || "";
-    formData.processo = document.getElementById("processo").value || "";
-    formData.exercicio = document.getElementById("exercicio").value || "";
-    formData.acoes = Array.from(
-        document.querySelectorAll('input[name="acoes[]"]:checked')
-    ).map(cb => cb.value);
+  // ... (coleta de informações gerais não muda) ...
+  formData.unidadeEscolar =
+    document.getElementById("unidade-escolar").value || "";
+  formData.programa = document.getElementById("programa").value || "";
+  formData.processo = document.getElementById("processo").value || "";
+  formData.exercicio = document.getElementById("exercicio").value || "";
+  formData.acoes = Array.from(
+    document.querySelectorAll('input[name="acoes[]"]:checked')
+  ).map((cb) => cb.value);
 
-    const templateTypeMap = {
-        "ata-prioridades-section": "ata-prioridades", "plano-acao-section": "plano-acao",
-        "cc-section": "cc", "ci-section": "ci", "dev-escola-section": "dev-escola",
-        "docs-compras-section": "docs-compras", "qd-section": "qd",
-    };
+  const templateTypeMap = {
+    "ata-prioridades-section": "ata-prioridades",
+    "plano-acao-section": "plano-acao",
+    "cc-section": "cc",
+    "ci-section": "ci",
+    "dev-escola-section": "dev-escola",
+    "docs-compras-section": "docs-compras",
+    "qd-section": "qd",
+  };
 
-    function collectElementData(element) {
-        const data = { rows: {}, subsections: {} };
-        const headerInput = element.querySelector(':scope > .dynamic-container > .form-group.box-type input');
-        if (headerInput) data.header = headerInput.value;
+  function collectElementData(element) {
+    const data = { rows: {}, subsections: {} };
+    const headerInput = element.querySelector(
+      ":scope > .dynamic-container > .form-group.box-type input"
+    );
+    if (headerInput) data.header = headerInput.value;
 
-        element.querySelectorAll(':scope .checklist-row').forEach(row => {
-            const itemCell = row.querySelector('.checklist-item');
-            if (!itemCell) return;
-            const itemName = itemCell.textContent.trim();
-            const rowData = {};
-            const checkedRadio = row.querySelector('input[type="radio"]:checked');
-            if (checkedRadio) rowData.status = checkedRadio.value;
-            const details = {};
-            row.querySelectorAll('.details-container input, .details-container textarea, .text-group input, .text-pendencia textarea, .checkbox-group input, .group-date input').forEach(detailInput => {
-                const detailName = detailInput.name;
-                if (!detailName) return;
-                if (detailInput.type === 'checkbox') {
-                    if (detailInput.checked) {
-                        if (!details[detailName]) details[detailName] = [];
-                        details[detailName].push(detailInput.value);
-                    }
-                } else if (detailInput.value) {
-                    details[detailName] = detailInput.value;
-                }
-            });
-            if (Object.keys(details).length > 0) rowData.details = details;
-            data.rows[itemName] = rowData;
+    element.querySelectorAll(":scope .checklist-row").forEach((row) => {
+      const itemCell = row.querySelector(".checklist-item");
+      if (!itemCell) return;
+      const itemName = itemCell.textContent.trim();
+      const rowData = {};
+      const checkedRadio = row.querySelector('input[type="radio"]:checked');
+      if (checkedRadio) rowData.status = checkedRadio.value;
+      const details = {};
+      row
+        .querySelectorAll(
+          ".details-container input, .details-container textarea, .text-group input, .text-group textarea, .text-pendencia textarea, .checkbox-group input, .group-date input"
+        )
+        .forEach((detailInput) => {
+          const detailName = detailInput.name;
+          if (!detailName) return;
+          if (detailInput.type === "checkbox") {
+            if (detailInput.checked) {
+              if (!details[detailName]) details[detailName] = [];
+              details[detailName].push(detailInput.value);
+            }
+          } else if (detailInput.value) {
+            details[detailName] = detailInput.value;
+          }
         });
+      if (Object.keys(details).length > 0) rowData.details = details;
+      data.rows[itemName] = rowData;
+    });
 
-        const obsTextarea = element.querySelector(':scope > .dynamic-container > .observacoes-container textarea');
-        if (obsTextarea && obsTextarea.value) data.observacoes = obsTextarea.value;
+    const obsTextarea = element.querySelector(
+      ":scope > .dynamic-container > .observacoes-container textarea"
+    );
+    if (obsTextarea && obsTextarea.value) data.observacoes = obsTextarea.value;
 
-        const subsections = element.querySelectorAll(":scope > section");
-        if (subsections.length > 0) {
-            subsections.forEach(sub => {
-                const originalId = sub.id.replace(/-\d+$/, '');
-                data.subsections[originalId] = collectElementData(sub);
-            });
-        }
-        return data;
+    const subsections = element.querySelectorAll(":scope > section");
+    if (subsections.length > 0) {
+      subsections.forEach((sub) => {
+        const originalId = sub.id.replace(/-\d+$/, "");
+        data.subsections[originalId] = collectElementData(sub);
+      });
+    }
+    return data;
+  }
+
+  document.querySelectorAll("fieldset:not(.hidden)").forEach((fieldset) => {
+    const fieldsetId = fieldset.id;
+
+    // **CORREÇÃO PRINCIPAL: Ignora o fieldset se ele não tiver um ID.**
+    if (!fieldsetId) {
+      return; // Pula para a próxima iteração
     }
 
-    document.querySelectorAll("fieldset:not(.hidden)").forEach(fieldset => {
-        const fieldsetId = fieldset.id;
-        
-        // **CORREÇÃO PRINCIPAL: Ignora o fieldset se ele não tiver um ID.**
-        if (!fieldsetId) {
-            return; // Pula para a próxima iteração
-        }
-
-        let templateType = null;
-        for (const key in templateTypeMap) {
-            if (fieldsetId.startsWith(key)) {
-                templateType = templateTypeMap[key];
-                break;
-            }
-        }
-        formData.fieldsets.push({
-            id: fieldsetId,
-            templateType: templateType,
-            data: collectElementData(fieldset),
-        });
+    let templateType = null;
+    for (const key in templateTypeMap) {
+      if (fieldsetId.startsWith(key)) {
+        templateType = templateTypeMap[key];
+        break;
+      }
+    }
+    formData.fieldsets.push({
+      id: fieldsetId,
+      templateType: templateType,
+      data: collectElementData(fieldset),
     });
+  });
 
-    const jsonData = JSON.stringify(formData, null, 2);
-    const blob = new Blob([jsonData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `checklist-pdde-${formData.processo || "dados"}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    a.remove();
+  const jsonData = JSON.stringify(formData, null, 2);
+  const blob = new Blob([jsonData], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `checklist-pdde-${formData.processo || "dados"}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
 }
-
+//EM DESENVOLVIMENTO
 // Função para carregar os dados do formulário (VERSÃO FINAL E ROBUSTA)
 function loadFormData() {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".json";
-    fileInput.style.display = "none";
-    document.body.appendChild(fileInput);
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".json";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
 
-    fileInput.addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+  fileInput.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const formData = JSON.parse(e.target.result);
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const formData = JSON.parse(e.target.result);
 
-                document.querySelectorAll('[id$="-receptacle"]').forEach(r => { r.innerHTML = ''; });
-                uniqueIdCounter = 0;
+        document.querySelectorAll('[id$="-receptacle"]').forEach((r) => {
+          r.innerHTML = "";
+        });
+        uniqueIdCounter = 0;
 
-                // ... (preenchimento de informações gerais não muda) ...
-                document.getElementById("unidade-escolar").value = formData.unidadeEscolar || "";
-                document.getElementById("processo").value = formData.processo || "";
-                document.getElementById("exercicio").value = formData.exercicio || "";
-                const programaSelect = document.getElementById("programa");
-                programaSelect.value = formData.programa || "";
-                programaSelect.dispatchEvent(new Event("change"));
-                if (formData.acoes) {
-                    formData.acoes.forEach(v => {
-                        const cb = document.querySelector(`input[name="acoes[]"][value="${v}"]`);
-                        if (cb) cb.checked = true;
-                    });
-                }
+        // ... (preenchimento de informações gerais não muda) ...
+        document.getElementById("unidade-escolar").value =
+          formData.unidadeEscolar || "";
+        document.getElementById("processo").value = formData.processo || "";
+        document.getElementById("exercicio").value = formData.exercicio || "";
+        const programaSelect = document.getElementById("programa");
+        programaSelect.value = formData.programa || "";
+        programaSelect.dispatchEvent(new Event("change"));
+        if (formData.acoes) {
+          formData.acoes.forEach((v) => {
+            const cb = document.querySelector(
+              `input[name="acoes[]"][value="${v}"]`
+            );
+            if (cb) cb.checked = true;
+          });
+        }
 
-                const buttonMap = {
-                    "ata-prioridades": "add-ata-prioridades", "plano-acao": "add-plano-acao",
-                    "cc": "add-cc", "ci": "add-ci", "dev-escola": "add-dev-escola",
-                    "docs-compras": "add-docs-compras", "qd": "add-qd",
-                };
-
-                function fillElementData(element, data) {
-                    // ... (esta função interna está correta e não precisa de mudanças) ...
-                    if (!element || !data) return;
-                    if (data.header) {
-                        const headerInput = element.querySelector(':scope > .dynamic-container > .form-group.box-type input');
-                        if (headerInput) headerInput.value = data.header;
-                    }
-                    if (data.rows) {
-                        for (const [itemName, rowData] of Object.entries(data.rows)) {
-                            const row = Array.from(element.querySelectorAll(':scope .checklist-row')).find(r => r.querySelector('.checklist-item')?.textContent.trim() === itemName);
-                            if (!row) continue;
-                            if (rowData.details) {
-                                const detailsContainer = row.querySelector('.details-container, .text-group, .text-pendencia, .checkbox-group, .group-date');
-                                if (detailsContainer) {
-                                    for (const [detailName, detailValue] of Object.entries(rowData.details)) {
-                                        const detailElements = detailsContainer.querySelectorAll(`:scope [name="${detailName}"]`);
-                                        if (detailElements.length === 0) continue;
-                                        if (Array.isArray(detailValue)) {
-                                            detailElements.forEach(checkbox => {
-                                                if (detailValue.includes(checkbox.value)) checkbox.checked = true;
-                                            });
-                                        } else {
-                                            detailElements[0].value = detailValue;
-                                        }
-                                    }
-                                }
-                            }
-                            if (rowData.status) {
-                                const radio = row.querySelector(`input[type="radio"][value="${rowData.status}"]`);
-                                if (radio) {
-                                    radio.checked = true;
-                                    radio.dispatchEvent(new Event('change', { bubbles: true }));
-                                }
-                            }
-                        }
-                    }
-                    if (data.observacoes) {
-                        const obsTextarea = element.querySelector(':scope > .dynamic-container > .observacoes-container textarea');
-                        if (obsTextarea) obsTextarea.value = data.observacoes;
-                    }
-                    if (data.subsections) {
-                        for (const [originalId, subsectionData] of Object.entries(data.subsections)) {
-                            const subsection = element.querySelector(`:scope [id^="${originalId}"]`);
-                            if (subsection) fillElementData(subsection, subsectionData);
-                        }
-                    }
-                }
-
-                if (formData.fieldsets) {
-                    formData.fieldsets.forEach(fsData => {
-                        // **CORREÇÃO PRINCIPAL: Pula o objeto se o ID for vazio.**
-                        if (!fsData.id) {
-                            return; // Pula para a próxima iteração
-                        }
-
-                        let currentFieldset;
-                        if (fsData.templateType) {
-                            const button = document.getElementById(buttonMap[fsData.templateType]);
-                            if (button) {
-                                button.click();
-                                const expectedId = `${fsData.templateType}-section-${uniqueIdCounter}`;
-                                currentFieldset = document.getElementById(expectedId);
-                            }
-                        } else {
-                            currentFieldset = document.getElementById(fsData.id);
-                        }
-                        if (currentFieldset) {
-                            fillElementData(currentFieldset, fsData.data);
-                        }
-                    });
-                }
-                alert("Dados carregados com sucesso!");
-                window.scrollTo(0, 0);
-            } catch (error) {
-                console.error("Erro ao processar o arquivo JSON:", error);
-                alert("Erro ao carregar o arquivo. Verifique o console para mais detalhes.");
-            }
+        const buttonMap = {
+          "ata-prioridades": "add-ata-prioridades",
+          "plano-acao": "add-plano-acao",
+          cc: "add-cc",
+          ci: "add-ci",
+          "dev-escola": "add-dev-escola",
+          "docs-compras": "add-docs-compras",
+          qd: "add-qd",
         };
-        reader.readAsText(file);
-    });
 
-    fileInput.click();
-    setTimeout(() => fileInput.remove(), 5000);
+        function fillElementData(element, data) {
+          // ... (esta função interna está correta e não precisa de mudanças) ...
+          if (!element || !data) return;
+          if (data.header) {
+            const headerInput = element.querySelector(
+              ":scope > .dynamic-container > .form-group.box-type input"
+            );
+            if (headerInput) headerInput.value = data.header;
+          }
+          if (data.rows) {
+            for (const [itemName, rowData] of Object.entries(data.rows)) {
+              const row = Array.from(
+                element.querySelectorAll(":scope .checklist-row")
+              ).find(
+                (r) =>
+                  r.querySelector(".checklist-item")?.textContent.trim() ===
+                  itemName
+              );
+              if (!row) continue;
+              if (rowData.details) {
+                const detailsContainer = row.querySelector(
+                  ".details-container, .text-group, .text-pendencia, .checkbox-group"
+                );
+                if (detailsContainer) {
+                  for (const [detailName, detailValue] of Object.entries(
+                    rowData.details
+                  )) {
+                    const detailElements = detailsContainer.querySelectorAll(
+                      `:scope [name="${detailName}"]`
+                    );
+                    if (detailElements.length === 0) continue;
+                    if (Array.isArray(detailValue)) {
+                      detailElements.forEach((checkbox) => {
+                        if (detailValue.includes(checkbox.value))
+                          checkbox.checked = true;
+                      });
+                    } else {
+                      detailElements[0].value = detailValue;
+                    }
+                  }
+                }
+              }
+              if (rowData.status) {
+                const radio = row.querySelector(
+                  `input[type="radio"][value="${rowData.status}"]`
+                );
+                if (radio) {
+                  radio.checked = true;
+                  radio.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+              }
+            }
+          }
+          if (data.observacoes) {
+            const obsTextarea = element.querySelector(
+              ":scope > .dynamic-container > .observacoes-container textarea"
+            );
+            if (obsTextarea) obsTextarea.value = data.observacoes;
+          }
+          if (data.subsections) {
+            for (const [originalId, subsectionData] of Object.entries(
+              data.subsections
+            )) {
+              const subsection = element.querySelector(
+                `:scope [id^="${originalId}"]`
+              );
+              if (subsection) fillElementData(subsection, subsectionData);
+            }
+          }
+        }
+
+        if (formData.fieldsets) {
+          formData.fieldsets.forEach((fsData) => {
+            // **CORREÇÃO PRINCIPAL: Pula o objeto se o ID for vazio.**
+            if (!fsData.id) {
+              return; // Pula para a próxima iteração
+            }
+
+            let currentFieldset;
+            if (fsData.templateType) {
+              const button = document.getElementById(
+                buttonMap[fsData.templateType]
+              );
+              if (button) {
+                button.click();
+                const expectedId = `${fsData.templateType}-section-${uniqueIdCounter}`;
+                currentFieldset = document.getElementById(expectedId);
+              }
+            } else {
+              currentFieldset = document.getElementById(fsData.id);
+            }
+            if (currentFieldset) {
+              fillElementData(currentFieldset, fsData.data);
+            }
+          });
+        }
+        alert("Dados carregados com sucesso!");
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error("Erro ao processar o arquivo JSON:", error);
+        alert(
+          "Erro ao carregar o arquivo. Verifique o console para mais detalhes."
+        );
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  fileInput.click();
+  setTimeout(() => fileInput.remove(), 5000);
 }
