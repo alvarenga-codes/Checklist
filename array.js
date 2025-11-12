@@ -1490,7 +1490,7 @@ const quadroDemonstrativoData = [
   {
     header: true,
     //Adicionar div com essa class
-    divClass: "form-group box-type box-remove",
+    divClass: "form-group in-text box-type box-remove",
     //Adicionar label (aninhado a div) com nome abaixo
     labelIdentifier: "Ação",
     //Adicionar input (aninhado a div)
