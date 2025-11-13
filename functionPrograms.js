@@ -860,7 +860,6 @@ function printPendenciasReport() {
                     page-break-after: auto !important;
                     border: 1px solid #ddd;
                     box-shadow: none !important;
-                    margin-bottom: 8mm !important;
                   }
 
                   /* Qualquer container interno (garante que o navegador possa quebrar dentro) */
@@ -888,7 +887,7 @@ function printPendenciasReport() {
                   /* Margens e tamanho da página */
                   @page {
                     size: A4 portrait;
-                    margin: 15mm;
+                    margin: 12mm;
                   }
 
                   /* Oculta botões e elementos de tela */
