@@ -212,7 +212,6 @@ textarea:focus {
   border-bottom: 1px solid var(--border-color);
 }
 
-
 .checklist-row:last-child {
   border-bottom: none;
 }
@@ -385,32 +384,32 @@ button:active,
 
 .box-type {
   display: grid;
-  align-items: center;        
-  justify-content: flex-start; 
-  gap: 1rem;             
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
   grid-template-columns: auto 1fr auto;
-  margin-bottom: 10px;       
+  margin-bottom: 10px;
 }
 .box-type > button {
   justify-self: end;
 }
 
-  .box-type input {
-    max-width: 200px;
-  }
+.box-type input {
+  max-width: 200px;
+}
 
-  .box-type.in-text > input {
-    width: 100%;
-    max-width: 100%;
-  }
+.box-type.in-text > input {
+  width: 100%;
+  max-width: 100%;
+}
 
-button[class*='remove'] {
+button[class*="remove"] {
   background-color: var(--remove-button-color);
   margin: 10px;
   color: white;
 }
 
-button[class*='remove']:hover {
+button[class*="remove"]:hover {
   background-color: var(--remove-button-hover);
 }
 
@@ -519,7 +518,7 @@ label:has(> .nao-se-aplica-checkbox) {
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: #fFF;
+  background-color: #fff;
   border-radius: 5px;
   border: 1px solid var(--border-color);
   box-shadow: 0 2px 4px var(--shadow-color);
@@ -589,12 +588,23 @@ footer p {
   }
 }
 
-@media (max-width: 490px) {
+@media (max-width: 540px) {
   .months-container {
     grid-template-columns: repeat(2, 1fr);
   }
   .save-load-print-container {
     flex-direction: column;
+    margin-top: 40px;
+    position: relative;
+  }
+  .save-load-print-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ddd; /* cinza claro */
   }
 }
 
@@ -633,35 +643,35 @@ footer p {
 
 /*Estilo do login*/
 .login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .login-container label {
-    display: block;
-    margin: 10px 0 5px;
+  display: block;
+  margin: 10px 0 5px;
 }
 
 .login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #00ddeb;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    margin-top: 40px;
+  width: 100%;
+  padding: 10px;
+  background-color: #00ddeb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-top: 40px;
 }
 
 .login-container button:hover {
-    background-color: #00b4c4;
+  background-color: #00b4c4;
 }
 
 #message {
-    color: red;
-    margin-top: 10px;
+  color: red;
+  margin-top: 10px;
 }
