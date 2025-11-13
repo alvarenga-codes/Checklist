@@ -749,6 +749,19 @@ function resetAllForms() {
     }
   });
 
+  // Garante que TODOS os "não se aplica" fiquem desmarcados
+  document.querySelectorAll(".nao-se-aplica-checkbox").forEach((checkbox) => {
+    checkbox.checked = false;
+
+    // Dispara o evento 'change' para garantir sincronização visual
+    checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+
+  // Remove a classe 'disappear' de todos os elementos que a possuam
+  document.querySelectorAll(".disappear").forEach((el) => {
+    el.classList.remove("disappear");
+  });
+
   // Ocultar campos dependentes (com .hidden)
   document.querySelectorAll(".text-group, .form-group-item").forEach((el) => {
     el.classList.add("hidden");
