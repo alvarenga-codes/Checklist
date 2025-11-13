@@ -1032,7 +1032,7 @@ function printPendenciasReport() {
       "Extrato atual conta zerada":
         "Ausência de extrato bancário atualizado demonstrando conta com saldo zerado",
       "Docs de compra (NF, orçamentos, comprovantes...)":
-        "Despesa realizada sem documentação comprobatória (Nota  Fiscal, mínimo de 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço)",
+        "Despesa realizada sem documentação comprobatória (Nota  Fiscal, mínimo de 03 orçamentos, comprovante de pagamento e, se for o caso, contrato de prestação de serviço)",
       "Razão social e CNPJ da UEx": "Razão social e/ou CNPJ da UEx incorretos",
       "Carimbo de recebido": "Carimbo de recebido",
       "Carimbo de identificação do programa":
