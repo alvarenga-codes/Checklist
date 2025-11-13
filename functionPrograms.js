@@ -1153,7 +1153,12 @@ function printPendenciasReport() {
     if (legend.textContent == "Comprovantes de compra") {
       const input = headerDiv.querySelector('input[type="text"]');
       if (input && input.value) {
-        return input.value.trim();
+        const valor = input.value.trim();
+        if (!isNaN(valor)) {
+          return "Compra nº " + valor;
+        } else {
+          return valor;
+        }
       } else {
         return "Comprovantes de compra";
       }
