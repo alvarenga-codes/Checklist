@@ -63,11 +63,10 @@ function renderizarAcoes() {
 
 //INSERIR DATA ATUAL INICIALMENTE
 const anoAtual = new Date().getFullYear();
-// Seleciona o input
 const inputAno = document.getElementById("exercicio");
 // Define o valor inicial como o ano atual
 inputAno.value = anoAtual;
-// Define limites, se quiser, como um range de anos válidos
+// Define limites
 inputAno.min = 2000;
 inputAno.max = anoAtual + 10;
 
@@ -767,7 +766,16 @@ function resetAllForms() {
   uniqueIdCounter = 0;
   templateCounter = 0;
 
-   // Scroll suave até o topo do formulário
+  //INSERIR DATA ATUAL INICIALMENTE
+  const anoAtual = new Date().getFullYear();
+  const inputAno = document.getElementById("exercicio");
+  // Define o valor inicial como o ano atual
+  inputAno.value = anoAtual;
+  // Define limites
+  inputAno.min = 2000;
+  inputAno.max = anoAtual + 10;
+
+  // Scroll suave até o topo do formulário
   const formTop = document.querySelector("form") || document.body;
   formTop.scrollIntoView({ behavior: "smooth", block: "start" });
 }
