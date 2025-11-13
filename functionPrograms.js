@@ -79,7 +79,11 @@ document
 
     //4.1 Ocultar todos os grupos de ações
     document.querySelectorAll(".form-group-item").forEach((item) => {
+      // Aplica a class hidden
       item.classList.add("hidden");
+      // Desmarca todos os checkboxes dentro do grupo
+      const checkboxes = item.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => (checkbox.checked = false));
     });
 
     // 4.2 Mostrar o grupo de ações correspondente ao programa selecionado
@@ -371,6 +375,8 @@ function toggleDetails(event) {
 
   const valoresParaMostrarDetalhes = ["incorreto"]; // Valores que ativam os detalhes
 
+  if (!detalhes) return; // segurança
+
   if (
     valoresParaMostrarDetalhes.includes(radioButton.value) &&
     radioButton.checked
@@ -381,6 +387,17 @@ function toggleDetails(event) {
   } else {
     if (detalhes) {
       detalhes.classList.add("hidden"); // Oculta o campo de detalhes
+      // Desmarca checkboxes internos
+      const innerCheckboxes = detalhes.querySelectorAll(
+        'input[type="checkbox"]'
+      );
+      innerCheckboxes.forEach((checkbox) => (checkbox.checked = false));
+
+      // Limpa campos de texto, textarea e selects
+      const innerInputs = detalhes.querySelectorAll(
+        'input[type="text"], textarea, select'
+      );
+      innerInputs.forEach((input) => (input.value = ""));
     }
   }
 }
@@ -406,9 +423,9 @@ function toggleVisibility() {
       if (content) {
         // Alterna a visibilidade do container
         if (event.target.checked) {
-          content.classList.add("hidden");
+          content.classList.add("disappear");
         } else {
-          content.classList.remove("hidden");
+          content.classList.remove("disappear");
         }
       }
     });
@@ -441,9 +458,9 @@ function toggleVisibilitySection(receptacleId) {
                 if (content) {
                   // Alterna a visibilidade do container
                   if (event.target.checked) {
-                    content.classList.add("hidden");
+                    content.classList.add("disappear");
                   } else {
-                    content.classList.remove("hidden");
+                    content.classList.remove("disappear");
                   }
                 }
               });
@@ -678,9 +695,9 @@ function setupCheckboxes(fieldset) {
 
       if (content) {
         if (event.target.checked) {
-          content.classList.add("hidden");
+          content.classList.add("disappear");
         } else {
-          content.classList.remove("hidden");
+          content.classList.remove("disappear");
         }
       }
     });
@@ -707,6 +724,57 @@ function escapeHtmlWithBreaks(text) {
   // Converte quebras de linha em <br>
   return escaped.replace(/\n/g, "<br>");
 }
+//Função de limpar o formulário
+function resetAllForms() {
+  const confirmReset = confirm(
+    "Tem certeza que deseja limpar todo o formulário?"
+  );
+  if (!confirmReset) {
+    return;
+  }
+
+  // Limpar todos os campos de texto, selects e textareas
+  document.querySelectorAll("input, textarea, select").forEach((el) => {
+    const type = el.type;
+
+    if (type === "checkbox" || type === "radio") {
+      el.checked = false;
+    } else if (
+      type === "text" ||
+      type === "number" ||
+      el.tagName === "TEXTAREA"
+    ) {
+      el.value = "";
+    } else if (el.tagName === "SELECT") {
+      el.selectedIndex = 0;
+    }
+  });
+
+  // Ocultar campos dependentes (com .hidden)
+  document.querySelectorAll(".text-group, .form-group-item").forEach((el) => {
+    el.classList.add("hidden");
+  });
+
+  // 3 Remover clones de templates, preservando o primeiro original
+  document.querySelectorAll("fieldset[id*='-section-']").forEach((fieldset) => {
+    // Verifica se o ID termina com um número (clone)
+    if (/\-\d+$/.test(fieldset.id)) {
+      fieldset.remove();
+    }
+  });
+
+  // Resetar contadores
+  uniqueIdCounter = 0;
+  templateCounter = 0;
+
+   // Scroll suave até o topo do formulário
+  const formTop = document.querySelector("form") || document.body;
+  formTop.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document
+  .querySelector(".clean-button")
+  .addEventListener("click", resetAllForms);
 
 // Função para imprimir relatório de pendências
 function printPendenciasReport() {
@@ -944,7 +1012,8 @@ function printPendenciasReport() {
         "Cálculos de correção monetária ausentes",
       Justificativa: "Justificativa ausente",
       "GRU (FNDE)": "GRU (FNDE) ausente",
-      "Extrato atual conta zerada": "Ausência de extrato bancário atualizado demonstrando conta com saldo zerado",
+      "Extrato atual conta zerada":
+        "Ausência de extrato bancário atualizado demonstrando conta com saldo zerado",
       "Docs de compra (NF, orçamentos, comprovantes...)":
         "Despesa realizada sem documentação comprobatória (Nota  Fiscal, mínimo de 03 orçamentos, comprovante de compra e, se for o caso, contrato de prestação de serviço)",
       "Razão social e CNPJ da UEx": "Razão social e/ou CNPJ da UEx incorretos",
@@ -963,8 +1032,10 @@ function printPendenciasReport() {
         "Data incorreta em relação à Nota Fiscal ou orçamentos",
       "Orçamento dentro da validade": "Orçamento vencido",
       "Nome do Vendedor": "Nome do vendedor ausente",
-      "Assinatura das partes": "Ausência de assinatura(s) da(s) parte(s) envolvida(s)",
-      "Itens, conforme NF": "Itens não correspondem integralmente aos descritos na Nota Fiscal",
+      "Assinatura das partes":
+        "Ausência de assinatura(s) da(s) parte(s) envolvida(s)",
+      "Itens, conforme NF":
+        "Itens não correspondem integralmente aos descritos na Nota Fiscal",
       "Processo relacionado": "Processo não relacionado (via SEI)",
       "Campos preenchidos adequadamente": "Campos preenchidos inadequadamente",
       "Identificação do programa": "Identificação do programa incorreta",
@@ -973,7 +1044,8 @@ function printPendenciasReport() {
       "Data posterior a última compra": "Data anterior à última compra",
       "Conselho fiscal: mínimo 03 conselheiros":
         "Conselheiros fiscais: menos de 03 assinaturas",
-      "Conselho fiscal: eleitos na ata": "Conselheiros fiscais não eleitos conforme a ata",
+      "Conselho fiscal: eleitos na ata":
+        "Conselheiros fiscais não eleitos conforme a ata",
       "Conselho fiscal: assinaturas":
         "Conselho fiscal: assinaturas ausente(s) ou difere(m) com a ata de eleição",
       "Referendo: membros eleitos": "Referendo: membros não eleitos",
@@ -987,7 +1059,8 @@ function printPendenciasReport() {
         "Lista de presença sem representatividade suficiente",
       "Lista de presentes: ausência de assinatura de membros":
         "Membros que participaram do planejamento, execução e aprovação não podem ser contabilizados nos votos",
-      "Mandato contempla execução": "Mandato não abrange todo o período de execução dos recursos",
+      "Mandato contempla execução":
+        "Mandato não abrange todo o período de execução dos recursos",
       "Registro em cartório": "Registro em cartório ausente",
     };
 
@@ -1671,7 +1744,6 @@ function printPendenciasReport() {
     reportWindow.print();
   };
 }
-
 
 //Função para colocar o texto padrão caso ocorra despesas não aprovadas
 function encontrarItemDespesasNaoAprovadas(section) {
