@@ -714,11 +714,11 @@ const docsCompraData = [
     //Adicionar div com essa identificação
     divClass: "form-group box-type box-remove",
     //Adicionar label (aninhado a div) com nome abaixo
-    labelIdentifier: "Identificação",
+    labelIdentifier: "Compra nº",
     //Adicionar input (aninhado a div)
     headerType: "text",
     headerName: "compra-identif",
-    headerPlaceholder: "nº SEI",
+    headerPlaceholder: "Nº da compra ou SEI",
     //Adicionar button de exclusão "Remover" (aninhado a div)
     removeClass: "remove-docs-compras",
   },
