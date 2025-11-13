@@ -629,7 +629,7 @@ footer p {
 }
 
 /* Responsividade */
-@media (max-width: 1285px) {
+@media (max-width: 1350px) {
   .save-load-print-container {
     position: static;
     display: flex;
