@@ -772,10 +772,6 @@ function resetAllForms() {
   formTop.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-document
-  .querySelector(".clean-button")
-  .addEventListener("click", resetAllForms);
-
 // Função para imprimir relatório de pendências
 function printPendenciasReport() {
   // Cria uma nova janela para o relatório
