@@ -12,9 +12,6 @@
   --accent-color: #28a745;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
-  --add-template-color: color-mix(in srgb, #e8f5e9 70%, white 30%);
-  --add-template-border: color-mix(in srgb, var(--add-template-color) 95%, black 5%);
-  --add-template-text: #2e7d32;
   --light-color: #f8f9fa;
   --dark-color: #343a40;
   --text-color: #333;
@@ -436,13 +433,13 @@ button:active {
 }
 
 .add-button {
-  background: linear-gradient(
+background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--add-template-color) 75%, white 25%),
-    color-mix(in srgb, var(--add-template-color) 88%, black 12%)
+    color-mix(in srgb, var(--accent-color) 75%, white 25%),
+    color-mix(in srgb, var(--accent-color) 85%, black 15%)
   );
-  color: var(--add-template-text);
-  border: 1px solid var(--add-template-border);
+  color: white;
+  border: 1px solid color-mix(in srgb, var(--accent-color) 40%, white 60%);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -455,12 +452,7 @@ button:active {
 }
 
 .add-button:hover {
-background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--add-template-color) 75%, white 25%),
-    color-mix(in srgb, var(--add-template-color) 88%, black 12%)
-  );
-  filter: brightness(1.05);
+  filter: brightness(1.10);
 }
 
 .box-type {
@@ -491,7 +483,7 @@ button[class*="remove"] {
 }
 
 button[class*="remove"]:hover {
-  background-color: var(--remove-button-hover);
+    filter: brightness(1.08);
 }
 
 /* Estilo para o container de ajuste */
