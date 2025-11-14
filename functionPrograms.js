@@ -633,7 +633,6 @@ function setupTemplateWithSectionCloning(
         const name = `${section.id}-${uniqueIdCounter}`;
         // Verifica se os elementos e os dados existem
         if (section.data && tableBody && fieldset) {
-          // console.log(`Renderizando dados da seção ${section.fieldset}...`);
           renderTableSection(
             section.data,
             `prefix-${uniqueIdCounter}`,
@@ -665,7 +664,6 @@ function setupTemplateWithSectionCloning(
         const name = `${section.id}-${uniqueIdCounter}`;
         // Verifica se os elementos e os dados existem
         if (section.data && tableBody && fieldset) {
-          // console.log(`Renderizando dados da seção ${section.fieldset}...`);
           renderTableSection(
             section.data,
             `prefix-${uniqueIdCounter}`,
@@ -999,23 +997,26 @@ function printPendenciasReport() {
     const textMap = {
       "Arquivo presente": "Ausente",
       "Arquivo assinado via SEI": "Arquivo não assinado (via SEI)",
-      "Digitalização completa": "Digitalização incompleta",
+      "Digitalização completa":
+        "Arquivo digitalizado de forma parcial, com trechos suprimidos",
       "Dados da unidade escolar": "Dados da unidade escolar incorretos",
       Texto: "Texto incorreto",
       "Assinatura da autoridade competente":
         "Assinado por autoridade não competente",
-      "Data anterior a 1ª compra": "Data posterior à 1ª compra",
-      "Saldo reprogramado": "Saldo reprogramado incorreto",
-      "Repasse FNDE": "Repasse FNDE incorreto",
+      "Data anterior a 1ª compra": "Data resgistrada posterior à 1ª compra",
+      "Saldo reprogramado":
+        "Saldo reprogramado divergente do exercício anterior",
+      "Repasse FNDE": "Previsão de crédito divergente do relatório do FNDE",
       "Custeio: despesas previstas na ata":
-        "Despesa de custeio não prevista na ata de prioridades",
+        "Despesa(s) de custeio não prevista(s) na ata de prioridades",
       "Capital: despesas previstas na ata":
-        "Despesa de capital não prevista na ata de prioridades",
-      "Membros eleitos": "Membros não eleitos conforme ata de eleição inserida",
+        "Despesa(s) de capital não prevista(s) na ata de prioridades",
+      "Membros eleitos": "Assinatura(s) de membro(s) não eleito(s)",
       "Assinatura dos membros":
-        "Assinatura ausente ou divergente da ata de eleição",
+        "Assinatura ausente ou divergente da registrada na ata de eleição",
       "Ação adequada": "Ação inadequada",
-      "Detalhamento dos itens": "Detalhamento dos itens ausente ou incorreto",
+      "Detalhamento dos itens": "Detalhamento dos itens ausente",
+      "Arquivo de extratos presente": "ausente",
       "Todos os meses presentes": "Extrato(s) ausente(s)",
       "Mês: atualizado até último dia útil":
         "Extrato(s) incompleto(s) ou não atualizado(s) até o último dia útil",
@@ -1028,11 +1029,11 @@ function printPendenciasReport() {
       "Cálculos de correção monetária":
         "Cálculos de correção monetária ausentes",
       Justificativa: "Justificativa ausente",
-      "GRU (FNDE)": "GRU (FNDE) ausente",
-      "Extrato atual conta zerada":
+      "GRU (FNDE)": "GRU ausente",
+      "Extrato atual que demonstra conta zerada (se for o caso)":
         "Ausência de extrato bancário atualizado demonstrando conta com saldo zerado",
-      "Docs de compra (NF, orçamentos, comprovantes...)":
-        "Despesa realizada sem documentação comprobatória (Nota  Fiscal, mínimo de 03 orçamentos, comprovante de pagamento e, se for o caso, contrato de prestação de serviço)",
+      "Arquivo corresponde a despesa":
+        "Arquivo apresentado não corresponde à despesa realizada",
       "Razão social e CNPJ da UEx": "Razão social e/ou CNPJ da UEx incorretos",
       "Carimbo de recebido": "Carimbo de recebido",
       "Carimbo de identificação do programa":
@@ -1040,14 +1041,14 @@ function printPendenciasReport() {
       "Carimbo de atesto": "Carimbo de atesto",
       "Comprovante de pagamento": "Comprovante de pagamento ausente",
       "Dados da empresa": "Dados da empresa incorretos ou ausentes",
-      "Data anterior/igual à NF": "Data posterior à NF",
+      "Data anterior/igual à NF":
+        "Data do orçamento posterior à da Nota Fiscal",
       "Itens em conformidade com a NF": "Itens não conformes com a Nota Fiscal",
       "Validade da proposta": "Validade da proposta",
       "Forma de pagamento": "Forma de pagamento ausente",
       "Prazo de entrega": "Prazo de entrega ausente",
       "Datado antes/igual da NF e depois/igual dos orçamentos":
         "Data incorreta em relação à Nota Fiscal ou orçamentos",
-      "Orçamento dentro da validade": "Orçamento vencido",
       "Nome do Vendedor": "Nome do vendedor ausente",
       "Assinatura das partes":
         "Ausência de assinatura(s) da(s) parte(s) envolvida(s)",
@@ -1058,16 +1059,17 @@ function printPendenciasReport() {
       "Identificação do programa": "Identificação do programa incorreta",
       "Reprogramação (parcial ou total)":
         "Reprogramação (parcial ou total) incorreta",
-      "Data posterior a última compra": "Data anterior à última compra",
+      "Data posterior a última compra":
+        "Data da reunião anterior à última compra",
       "Conselho fiscal: mínimo 03 conselheiros":
         "Conselheiros fiscais: menos de 03 assinaturas",
       "Conselho fiscal: eleitos na ata":
         "Conselheiros fiscais não eleitos conforme a ata",
       "Conselho fiscal: assinaturas":
-        "Conselho fiscal: assinaturas ausente(s) ou difere(m) com a ata de eleição",
+        "Conselho fiscal: assinaturas ausente ou divergente da registrada na ata de eleição",
       "Referendo: membros eleitos": "Referendo: membros não eleitos",
       "Referendo: assinaturas":
-        "Referendo: assinaturas ausente(s) ou difere(m) com a ata de eleição",
+        "Referendo: assinatura ausente ou divergente da registrada na ata de eleição",
       "Ano adequado": "Ano incorreto",
       "Data igual/posterior ao Parecer do Conselho Fiscal":
         "Data anterior ao Parecer do Conselho Fiscal",
@@ -1079,6 +1081,19 @@ function printPendenciasReport() {
       "Mandato contempla execução":
         "Mandato não abrange todo o período de execução dos recursos",
       "Registro em cartório": "Registro em cartório ausente",
+      "Pagamentos efetuados": "Registro dos pagamentos efetuados incorreto",
+      "Valor repasse - FNDE":
+        "Registro do valor creditado pelo FNDE divergente com o Consulta Escola",
+      "Recursos próprios": "Registro do valor de Recursos Próprios incorreto",
+      "Rendimentos de aplicação financeira":
+        "Registro dos rendimentos de aplicação financeira incorreto",
+      "Devolução de Recursos ao FNDE":
+        "Registro de devolução de Recursos ao FNDE incorreto",
+      "Valor total da receita": "Registro do valor total da receita incorreto",
+      "Valor da despesa realizada":
+        "Registro do valor da despesa realizada incorreto",
+      "Saldo a reprogramar para o execício seguinte":
+        "Registro do saldo a reprogramar para o execício seguinte incorreto",
     };
 
     return textMap[text] || `${text} - Incorreto`;
@@ -1711,20 +1726,23 @@ function printPendenciasReport() {
     });
 
     // Adiciona as observações gerais da seção
-    const itensNaoAprovados = encontrarItemDespesasNaoAprovadas(section);
+    const itensNaoAprovados = encontrarTitulosValidos(section);
     const textosPadrao = {
       "Despesas não aprovadas": window.observacoesGerais[0].naoAprovado,
       "Despesas sem documentação comprobatória":
         window.observacoesGerais[1].despesaSemComprovacao,
       "Valores não aplicados na Conta Investimento":
         window.observacoesGerais[2].naoAplicadoPrazo,
+        "Remanejamento entre categorias (custeio/capital)":
+        window.observacoesGerais[3].remanejamentoCategorias,
+        "Remanejamento entre ações":
+        window.observacoesGerais[4].remanejamentoAcoes,
     };
     if (section.observacoes || itensNaoAprovados.length > 0) {
       let textos = [];
 
       // Adiciona os textos padrão conforme os itens encontrados
-      itensNaoAprovados.forEach((item) => {
-        const titulo = item?.title?.trim();
+      itensNaoAprovados.forEach((titulo) => {
         const textoPadrao = textosPadrao[titulo];
         if (textoPadrao) {
           textos.push(textoPadrao);
@@ -1768,22 +1786,54 @@ function printPendenciasReport() {
 }
 
 //Função para colocar o texto padrão caso ocorra despesas não aprovadas
-function encontrarItemDespesasNaoAprovadas(section) {
-  if (!section || !section.items) return null;
-
-  const items = Array.isArray(section.items) ? section.items : [section.items]; // garante que será sempre array
-
-  //Array dos titulos procurados
+function encontrarTitulosValidos(section) {
   const titulosValidos = [
     "Despesas não aprovadas",
     "Despesas sem documentação comprobatória",
     "Valores não aplicados na Conta Investimento",
+    "Remanejamento entre categorias (custeio/capital)",
+    "Remanejamento entre ações",
   ];
 
-  // procura o item pelo título "Despesas não aprovadas"
-  const encontrados = items.filter((item) =>
-    titulosValidos.includes(item?.title?.trim())
-  );
+  const encontrados = [];
+
+  // 1. Busca normal em section.items
+  if (section?.items) {
+    const items = Array.isArray(section.items)
+      ? section.items
+      : [section.items];
+
+    items.forEach((item) => {
+      if (titulosValidos.includes(item?.title?.trim())) {
+        encontrados.push(item.title.trim());
+      }
+    });
+  }
+
+  // 2. Busca dentro de subsections -> items -> details
+  if (section?.subsections) {
+    section.subsections.forEach(sub => {
+      if (!sub.items) return;
+
+      sub.items.forEach(item => {
+        if (!item.details) return;
+
+        item.details.forEach(detailText => {
+          // Remove prefixo "Pendência: "
+          let textoLimpo = detailText.replace(/^Pendência:\s*/i, "");
+
+          // Divide por vírgula
+          const partes = textoLimpo.split(',').map(p => p.trim());
+
+          partes.forEach(parte => {
+            if (titulosValidos.includes(parte)) {
+              encontrados.push(parte);
+            }
+          });
+        });
+      });
+    });
+  }
 
   return encontrados;
 }
