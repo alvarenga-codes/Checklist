@@ -381,7 +381,7 @@ const contaCCorrenteData = [
   },
   //Linhas
   {
-    item: "Arquivo presente",
+    item: "Arquivo de extratos presente",
     name: "extrato-corrente-arquivo",
     valueAprovado: "correto",
     valuePendencia: "incorreto",
@@ -724,7 +724,7 @@ const docsCompraData = [
   },
   //Linhas
   {
-    item: "Docs de compra (NF, orçamentos, comprovantes...)",
+    item: "Arquivo corresponde a despesa",
     name: "comprovante-compra-arquivo",
     valueAprovado: "correto",
     valuePendencia: "incorreto",
@@ -888,16 +888,7 @@ const orcamentoUmData = [
     class: "checklist-item",
     hasDetails: false,
   },
-  {
-    item: "Orçamento dentro da validade",
-    name: "orcamento-um-dentro-validade",
-    valueAprovado: "correto",
-    valuePendencia: "incorreto",
-    type: "radio",
-    class: "checklist-item",
-    hasDetails: false,
-  },
-  {
+   {
     item: "Itens em conformidade com a NF",
     name: "orcamento-um-itens-conformidade-nf",
     valueAprovado: "correto",
@@ -921,7 +912,7 @@ const orcamentoUmData = [
     //tem que criar um span antes de cada label <span></span>
     detailsOptions: [
       { value: "validade-ausente", label: "Validade ausente" },
-      { value: "validade-vencida", label: "Validade vencida" },
+      { value: "validade-vencida", label: "Validade expirada" },
     ],
     dataTarget: "o-um-validade",
   },
@@ -991,16 +982,6 @@ const orcamentoDoisData = [
     hasDetails: false,
   },
   {
-    item: "Orçamento dentro da validade",
-    name: "orcamento-dois-dentro-validade",
-    valueAprovado: "correto",
-    valuePendencia: "incorreto",
-    type: "radio",
-    class: "checklist-item",
-    hasDetails: false,
-  },
-
-  {
     item: "Itens em conformidade com a NF",
     name: "orcamento-dois-itens-conformidade-nf",
     valueAprovado: "correto",
@@ -1024,7 +1005,7 @@ const orcamentoDoisData = [
     //tem que criar um span antes de cada label <span></span>
     detailsOptions: [
       { value: "validade-ausente", label: "Validade ausente" },
-      { value: "validade-vencida", label: "Validade vencida" },
+      { value: "validade-vencida", label: "Validade expirada" },
     ],
     dataTarget: "o-dois-validade",
   },
@@ -1094,16 +1075,6 @@ const orcamentoTresData = [
     hasDetails: false,
   },
   {
-    item: "Orçamento dentro da validade",
-    name: "orcamento-tres-dentro-validade",
-    valueAprovado: "correto",
-    valuePendencia: "incorreto",
-    type: "radio",
-    class: "checklist-item",
-    hasDetails: false,
-  },
-
-  {
     item: "Itens em conformidade com a NF",
     name: "orcamento-tres-itens-conformidade-nf",
     valueAprovado: "correto",
@@ -1127,7 +1098,7 @@ const orcamentoTresData = [
     //tem que criar um span antes de cada label <span></span>
     detailsOptions: [
       { value: "validade-ausente", label: "Validade ausente" },
-      { value: "validade-vencida", label: "Validade vencida" },
+      { value: "validade-vencida", label: "Validade expirada" },
     ],
     dataTarget: "o-tres-validade",
   },
@@ -1194,10 +1165,10 @@ const contratoServicoData = [
     detailsName: "contrato-servico-data-verificacao",
     //tem que criar um span antes de cada label <span></span>
     detailsOptions: [
-      { value: "posterior-nf", label: "Datado posterior à NF" },
+      { value: "posterior-nf", label: "Datado posterior à Nota Fiscal" },
       {
         value: "anterior-orcamento",
-        label: "Contrato anterior a algum orçamento",
+        label: "Firmado em momento anterior a um ou mais orçamentos apresentados",
       },
     ],
     dataTarget: "cs-post-nf",
@@ -1528,10 +1499,10 @@ const qdBlocoUmData = [
     detailsName: "quadro-demonstrativo-bloco-um-incorreto",
     //tem que criar um span antes de cada label <span></span>
     detailsOptions: [
-      { value: "programa-acao", label: "Programa/ação inadequado" },
-      { value: "exercicio", label: "Exercício inadequado" },
-      { value: "nome", label: "Nome inadequado" },
-      { value: "cnpj", label: "CNPJ inadequado" },
+      { value: "programa-acao", label: "Programa/ação incorreto" },
+      { value: "exercicio", label: "Exercício incorreto" },
+      { value: "nome", label: "Nome incorreto" },
+      { value: "cnpj", label: "CNPJ incorreto" },
     ],
     dataTarget: "qd-b-um",
   },
@@ -1669,9 +1640,9 @@ const qdBlocoDoisData = [
     detailsOptions: [
       {
         value: "total",
-        label: "Valor total diferente do último dia útil de dezembro",
+        label: "Valor total divergente do apurado no último dia útil de dezembro",
       },
-      { value: "categoria-economica", label: "Custeio/capital inadequados" },
+      { value: "categoria-economica", label: "Custeio/capital incorretos" },
       {
         value: "remanejamento-entre-categorias",
         label: "Remanejamento entre categorias (custeio/capital)",
@@ -1789,4 +1760,6 @@ window.observacoesGerais = [
     naoAplicadoPrazo:
       "<b>Valores não aplicados na Conta Investimento</b><br>Ressaltamos a necessidade de que os valores recebidos permaneçam devidamente aplicados na conta vinculada ao programa, conforme orientações normativas do FNDE, a fim de assegurar a correta utilização e o devido rendimento dos recursos.<br>Após a regularização da aplicação, a Unidade deverá calcular o rendimento que teria sido auferido no período em que o valor permaneceu fora da aplicação, utilizando o Sistema de Atualização de Débito do Tribunal de Contas da União (TCU), e proceder à devolução correspondente na conta vinculada da unidade escolar.",
   },
+  {remanejamentoCategorias: "<b>Remanejamento entre categorias de despesa (Custeio/Capital)</b><br>A Unidade Executora (UEx) deve apresentar uma justificativa formal para o remanejamento, conforme previsto na legislação vigente do PDDE.<br>A justificativa deve demonstrar a necessidade da mudança, comprovando que a alteração mantém a finalidade da ação e atende aos critérios de elegibilidade das despesas, em conformidade com a Resolução FNDE nº 15/2021.<br>A justificativa deve ser deliberada em Assembleia Geral, com participação de representantes da comunidade escolar, e referendada pelo Conselho Escolar ou por pelo menos 10% dos integrantes de cada segmento.<br>O documento resultante da assembleia deve ser inserido no processo, contendo a lista de presença e o registro da decisão."},
+  {remanejamentoAcoes: "<b>Remanejamento entre Ações</b><br>A Unidade Executora (UEx) deve apresentar uma justificativa formal para o remanejamento, conforme previsto na legislação vigente do PDDE e demais normativos específicos das ações envolvidas.<br>A justificativa deve explicar claramente o motivo da alteração, demonstrando a necessidade do remanejamento. As informações devem estar coerentes com o plano de aplicação de recursos, a previsão de receitas e o registro de despesas e pagamentos.<br>A justificativa deve ser deliberada em Assembleia Geral, com participação de representantes da comunidade escolar, e referendada pelo Conselho Escolar ou por pelo menos 10% dos integrantes de cada segmento.<br>O documento resultante da assembleia deve ser inserido no processo, contendo a lista de presença e o registro da decisão."},
 ];
