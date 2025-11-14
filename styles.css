@@ -12,6 +12,9 @@
   --accent-color: #28a745;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
+  --add-template-color: color-mix(in srgb, #e8f5e9 70%, white 30%);
+  --add-template-border: color-mix(in srgb, var(--add-template-color) 95%, black 5%);
+  --add-template-text: #2e7d32;
   --light-color: #f8f9fa;
   --dark-color: #343a40;
   --text-color: #333;
@@ -19,10 +22,7 @@
   --border-color: #ced4da;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --hover-color: #3a5a8c;
-  --add-button-color: #28a745;
-  --add-button-hover: #218838;
   --remove-button-color: #dc3545;
-  --remove-button-hover: #c82333;
   --transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 html {
@@ -436,8 +436,13 @@ button:active {
 }
 
 .add-button {
-  background-color: var(--add-button-color);
-  color: white;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--add-template-color) 75%, white 25%),
+    color-mix(in srgb, var(--add-template-color) 88%, black 12%)
+  );
+  color: var(--add-template-text);
+  border: 1px solid var(--add-template-border);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -445,12 +450,17 @@ button:active {
 }
 
 .add-button span {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 .add-button:hover {
-  background-color: var(--add-button-hover);
+background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--add-template-color) 75%, white 25%),
+    color-mix(in srgb, var(--add-template-color) 88%, black 12%)
+  );
+  filter: brightness(1.05);
 }
 
 .box-type {
@@ -566,7 +576,7 @@ hr {
 }
 
 .load-button:hover {
-    filter: brightness(1.05);
+  filter: brightness(1.05);
 }
 
 .clean-button {
